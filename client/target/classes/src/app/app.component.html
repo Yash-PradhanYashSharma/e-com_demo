@@ -1,0 +1,25 @@
+<div class="container">
+  <nav class="navbar navbar-dark bg-primary">
+    <span class="navbar-brand mb-0 h1">{{title}}</span>
+    <button class="btn btn-primary btn-sm" *ngIf="!isAuthenticated" (click)="login()"> Login </button>
+    <button class="btn btn-primary btn-sm" *ngIf="isAuthenticated" (click)="logout()"> Logout </button>
+  </nav>
+  <ul class="nav justify-content-end" *ngIf="isAuthenticated">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/cart" routerLinkActive="active">My Cart</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/order" routerLinkActive="active">Order</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/invoice" routerLinkActive="active">Invoice</a>
+    </li>
+  </ul>
+  <app-messages></app-messages>
+</div>
+
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
+
+
