@@ -1,0 +1,48 @@
+<h3></h3>
+<div class="row">
+  <div class="col-12">
+    <form (ngSubmit)="getOrder()" [formGroup]="orderForm" novalidate>
+      <div class="input-group mb-3">
+        <input aria-describedby="order-id" aria-label="Order Id" class="form-control" formControlName="orderId"
+               placeholder="Order Id" type="number">
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary" id="order-id" type="submit">Show Order</button>
+          <button class="btn btn-outline-primary" id="invoice-pdf-id" (click)="getOrderPDF()" >Show PDF</button>
+        </div>
+      </div>
+    </form>
+    <div *ngIf="cart != undefined" class="row">
+      <div class="col-6">
+        <ul class="list-group">
+          <li class="list-group-item">User: {{cart.userId}}</li>
+          <li class="list-group-item">Product Store: {{cart.productStoreId}}</li>
+          <li class="list-group-item">Created By:{{cart.createdBy}}</li>
+          <li class="list-group-item">Date: {{cart.orderDate}}</li>
+        </ul>
+      </div>
+      <div class="col-6">
+        <div class="form-group">
+          <ul class="list-group">
+            <a *ngFor="let product of cart.products"
+               class="list-group-item list-group-item-action flex-column align-items-start">
+              <h5 class="mb-1">Product Name</h5>
+              <h6>{{product.productName}}</h6>
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">Product Id</p>
+                <small>{{product.productId}}</small>
+              </div>
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">Quantity</p>
+                <small>{{product.quantity}}</small>
+              </div>
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">Price</p>
+                <small>{{product.price}}</small>
+              </div>
+            </a>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

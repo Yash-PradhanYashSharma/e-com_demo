@@ -1,0 +1,81 @@
+<form #cartForm='ngForm' (ngSubmit)="getCart()" novalidate>
+  <div class="row">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12">
+          <div class="input-group mb-4">
+            <div class="ng-autocomplete form-control">
+              <ng-autocomplete
+                [data]="data"
+                [searchKeyword]="product"
+                (selected)='selectEvent($event)'
+                (inputChanged)='onChangeSearch($event)'
+                (inputFocused)='onFocused($event)'
+                [itemTemplate]="itemTemplate"
+                [notFoundTemplate]="notFoundTemplate">
+              </ng-autocomplete>
+              <ng-template #itemTemplate let-item>
+                <a [innerHTML]="item.productName"></a>
+              </ng-template>
+              <ng-template #notFoundTemplate let-notFound>
+                <div [innerHTML]="notFound"></div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group">
+            <label for="userId">User Id</label>
+            <input [(ngModel)]="cart.userId" aria-describedby="User Id" class="form-control" id="userId" name="userId"
+                   placeholder="User Id"
+                   type="text">
+          </div>
+          <div class="form-group">
+            <label for="productStoreId">Product Store Id</label>
+            <input [(ngModel)]="cart.productStoreId" aria-describedby="Product Store Id" class="form-control"
+                   id="productStoreId"
+                   name="productStoreId" placeholder="productStoreId"
+                   type="text">
+          </div>
+          <div class="form-group">
+            <label for="createdBy">Created By</label>
+            <input [(ngModel)]="cart.createdBy" aria-describedby="Created By" class="form-control" id="createdBy"
+                   name="createdBy"
+                   placeholder="Created By"
+                   type="text">
+          </div>
+          <div class="form-group">
+            <label for="orderDate">Order Date</label>
+            <input [(ngModel)]="cart.orderDate" aria-describedby="Order Date" class="form-control" id="orderDate"
+                   name="orderDate"
+                   placeholder="Order Date"
+                   type="text">
+          </div>
+          <button class="btn btn-success" id="save" type="submit">Place Order</button>
+        </div>
+        <div class="col-8">
+          <div class="form-group">
+            <ul class="list-group">
+              <a *ngFor="let product of cart.products"
+                 class="list-group-item list-group-item-action flex-column align-items-start">
+                <h6>{{product.productName}}</h6>
+                <div class="d-flex w-100 justify-content-between">
+                  <p class="mb-1">Product Id</p>
+                  <small>{{product.productId}}</small>
+                </div>
+                <div class="d-flex w-100 justify-content-between">
+                  <p class="mb-2">Quantity</p>
+                  <small>{{product.quantity}}</small>
+                </div>
+                <div class="d-flex w-100 justify-content-between">
+                  <p class="mb-3">Price</p>
+                  <small>{{product.price}}</small>
+                </div>
+              </a>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

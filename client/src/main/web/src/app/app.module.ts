@@ -1,24 +1,39 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-
-import {AppRoutingModule} from './app-routing.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
 import {AppComponent} from './app.component';
-import {MessagesComponent} from "./messages/messages.component";
-import { HttpClientModule } from '@angular/common/http';
+import {CartComponent} from './cart/cart.component';
+import {OrderComponent} from './order/order.component';
+import {InvoiceComponent} from './invoice/invoice.component';
+import {MessagesComponent} from './messages/messages.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AutocompleteLibModule} from "angular-ng-autocomplete";
+import {OAuthModule} from 'angular-oauth2-oidc';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    MessagesComponent
+    CartComponent,
+    OrderComponent,
+    InvoiceComponent,
+    MessagesComponent,
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    HttpClientModule,
+    AutocompleteLibModule,
     AppRoutingModule,
-    HttpClientModule
+    ReactiveFormsModule,
+    PdfViewerModule,
+    HttpClientModule,
+    OAuthModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-
 export class AppModule {
 }

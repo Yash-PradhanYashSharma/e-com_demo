@@ -1,0 +1,89 @@
+<h3></h3>
+<div class="row">
+  <div class="col-12">
+    <form (ngSubmit)="getInvoice()" [formGroup]="invoiceForm" novalidate>
+      <div class="input-group mb-3">
+        <input aria-describedby="invoice-id" aria-label="Invoice Id" class="form-control" formControlName="invoiceId"
+               placeholder="Invoice Id" type="number">
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary" id="invoice-id" type="submit">Show Invoice</button>
+          <button (click)="getInvoicePDF()" class="btn btn-outline-primary" id="invoice-pdf-id">Show PDF</button>
+        </div>
+      </div>
+    </form>
+    <div *ngIf="invoiceValue != undefined" class="card w-100">
+      <h5 class="card-header">Sales Invoice</h5>
+      <div class="card-body">
+        <h5 class="card-title">{{invoiceValue.customer_name}}</h5>
+        <div class="row">
+          <div class="card w-50">
+            <div class="card-body">
+              <h5 class="card-title">User Details</h5>
+              <div class="card-text">
+                <ul class="list-group">
+                  <li class="list-group-item">Invoice Id: {{invoiceValue.id}}</li>
+                  <li class="list-group-item">Email : {{invoiceValue.customer_email}}</li>
+                  <li class="list-group-item">Currency : {{invoiceValue.currency | uppercase}}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="card w-50">
+            <div class="card-body">
+              <h5 class="card-title">Amount</h5>
+              <div class="card-text">
+                <ul class="list-group">
+                  <li class="list-group-item">Amount Due : <span
+                    class="float-right">{{invoiceValue.amount_due | currency}}</span></li>
+                  <li class="list-group-item">Amount Remaining: <span
+                    class="float-right">{{invoiceValue.amount_remaining | currency}}</span></li>
+                  <li class="list-group-item">Amount Paid : <span
+                    class="float-right">{{invoiceValue.amount_paid | currency}}</span></li>
+                  <li class="list-group-item">Tax : <span class="float-right">{{invoiceValue.tax | currency}}</span>
+                  </li>
+                  <li class="list-group-item">Tax Percentage: <span
+                    class="float-right">{{invoiceValue.tax_percent | currency}}</span></li>
+                  <li class="list-group-item">Sub Total: <span
+                    class="float-right">{{invoiceValue.subtotal | currency}}</span></li>
+                  <li class="list-group-item">Total: <span class="float-right">{{invoiceValue.total | currency}}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="card w-100">
+            <div class="card-body">
+              <h5 class="card-title">Invoice Items</h5>
+              <div class="card-text">
+                <table class="table table-striped">
+                  <thead>
+                  <tr>
+                    <th class="text-right" scope="col">#</th>
+                    <th scope="col">Item</th>
+                    <th class="text-right" scope="col">Quantity</th>
+                    <th class="text-right" scope="col">Amount</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let item of lines; index as i">
+                    <th scope="row">{{i + 1}}</th>
+                    <td>{{item.description}}</td>
+                    <td class="text-right">{{item.quantity | number}}</td>
+                    <td class="text-right">{{item.amount  | currency}}</td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--<div class="pdf-container">
+    <pdf-viewer [src]="testURL" [original-size]="true" [show-all]="true"></pdf-viewer>
+  </div>-->
+</div>
+

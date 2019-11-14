@@ -1,8 +1,8 @@
 <div class="container">
   <nav class="navbar navbar-dark bg-primary">
     <span class="navbar-brand mb-0 h1">{{title}}</span>
-    <button class="btn btn-primary btn-sm" *ngIf="!isAuthenticated" (click)="login()"> Login </button>
-    <button class="btn btn-primary btn-sm" *ngIf="isAuthenticated" (click)="logout()"> Logout </button>
+    <button class="btn btn-primary btn-sm" *ngIf="!isAuthenticated" (click)="login()">Login</button>
+    <button class="btn btn-primary btn-sm" *ngIf="isAuthenticated" (click)="logout()">Logout</button>
   </nav>
   <ul class="nav justify-content-end" *ngIf="isAuthenticated">
     <li class="nav-item">
