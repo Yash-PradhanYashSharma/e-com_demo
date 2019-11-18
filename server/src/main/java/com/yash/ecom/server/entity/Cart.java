@@ -10,9 +10,20 @@ public class Cart {
 
     private String userId;
     private Date cartDate;
+    private CartItem[] cartItems;
+
+    @OneToMany
+    @OrderColumn
+    @JoinColumn(name = "userId", referencedColumnName = "userId", insertable = false, updatable = false)
+    public CartItem[] getCartItems() {
+        return cartItems;
+    }
+    public void setCartItems(CartItem[] cartItems) {
+        this.cartItems = cartItems;
+    }
 
     @Id
-    @Column(name = "userid", nullable = false, length = 20)
+    @Column(name = "userid", nullable = false, length = 100)
     public String getUserId() {
         return userId;
     }

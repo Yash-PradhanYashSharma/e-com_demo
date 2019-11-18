@@ -1,81 +1,94 @@
-<form #cartForm='ngForm' (ngSubmit)="getCart()" novalidate>
-  <div class="row">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12">
-          <div class="input-group mb-4">
-            <div class="ng-autocomplete form-control">
-              <ng-autocomplete
-                [data]="data"
-                [searchKeyword]="product"
-                (selected)='selectEvent($event)'
-                (inputChanged)='onChangeSearch($event)'
-                (inputFocused)='onFocused($event)'
-                [itemTemplate]="itemTemplate"
-                [notFoundTemplate]="notFoundTemplate">
-              </ng-autocomplete>
-              <ng-template #itemTemplate let-item>
-                <a [innerHTML]="item.productName"></a>
-              </ng-template>
-              <ng-template #notFoundTemplate let-notFound>
-                <div [innerHTML]="notFound"></div>
-              </ng-template>
-            </div>
-          </div>
-        </div>
-        <div class="col-4">
-          <div class="form-group">
-            <label for="userId">User Id</label>
-            <input [(ngModel)]="cart.userId" aria-describedby="User Id" class="form-control" id="userId" name="userId"
-                   placeholder="User Id"
-                   type="text">
-          </div>
-          <div class="form-group">
-            <label for="productStoreId">Product Store Id</label>
-            <input [(ngModel)]="cart.productStoreId" aria-describedby="Product Store Id" class="form-control"
-                   id="productStoreId"
-                   name="productStoreId" placeholder="productStoreId"
-                   type="text">
-          </div>
-          <div class="form-group">
-            <label for="createdBy">Created By</label>
-            <input [(ngModel)]="cart.createdBy" aria-describedby="Created By" class="form-control" id="createdBy"
-                   name="createdBy"
-                   placeholder="Created By"
-                   type="text">
-          </div>
-          <div class="form-group">
-            <label for="orderDate">Order Date</label>
-            <input [(ngModel)]="cart.orderDate" aria-describedby="Order Date" class="form-control" id="orderDate"
-                   name="orderDate"
-                   placeholder="Order Date"
-                   type="text">
-          </div>
-          <button class="btn btn-success" id="save" type="submit">Place Order</button>
-        </div>
-        <div class="col-8">
-          <div class="form-group">
-            <ul class="list-group">
-              <a *ngFor="let product of cart.products"
-                 class="list-group-item list-group-item-action flex-column align-items-start">
-                <h6>{{product.productName}}</h6>
-                <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-1">Product Id</p>
-                  <small>{{product.productId}}</small>
-                </div>
-                <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-2">Quantity</p>
-                  <small>{{product.quantity}}</small>
-                </div>
-                <div class="d-flex w-100 justify-content-between">
-                  <p class="mb-3">Price</p>
-                  <small>{{product.price}}</small>
-                </div>
-              </a>
-            </ul>
-          </div>
-        </div>
+<div class="row">
+  <div class="col-12">
+    <div class="input-group mb-4">
+      <div class="ng-autocomplete form-control">
+        <ng-autocomplete
+          [data]="data"
+          [searchKeyword]="keyword"
+          (selected)='selectEvent($event)'
+          (inputChanged)='onChangeSearch($event)'
+          (inputFocused)='onFocused($event)'
+          (inputCleared)='onCleared($event)'
+          placeHolder="Enter the Product Name "
+          historyIdentifier="product"
+          (closed)='onClosed($event)'
+          [itemTemplate]="itemTemplate"
+          [notFoundTemplate]="notFoundTemplate">
+        </ng-autocomplete>
+        <ng-template #itemTemplate let-item>
+          <blockquote class="blockquote">
+            <p class="mb-0" [innerHTML]="item?.productName"></p>
+            <footer class="blockquote-footer" [innerHTML]="item?.productDescription"></footer>
+          </blockquote>
+        </ng-template>
+        <ng-template #notFoundTemplate let-notFound>
+          <div [innerHTML]="notFound"></div>
+        </ng-template>
       </div>
     </div>
   </div>
-</form>
+  <div class="col-12">
+    <form #cartForm='ngForm' (ngSubmit)="createOrder()" novalidate>
+      <div class="col-12">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group">
+              <label for="userId">User Id</label>
+              <input [(ngModel)]="cart.userId" aria-describedby="User Id" disabled class="form-control" id="userId"
+                     name="userId"
+                     placeholder="User Id"
+                     type="text">
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="form-group">
+              <label for="cartDate">Date</label>
+              <input [(ngModel)]="cart.cartDate" aria-describedby="Cart Date" disabled class="form-control"
+                     id="cartDate"
+                     name="cartDate"
+                     placeholder="Date"
+                     type="text">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="form-group">
+          <ul class="list-group">
+            <a *ngFor="let item of cart.cartItems"
+               class="list-group-item list-group-item-action flex-column align-items-start">
+              <button type="button" class="close" aria-label="Close" (click)="removeItem(item.productId)">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <h6>{{item.productName}}</h6>
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-1">Product Description</p>
+                <small>{{item.productDescription}}</small>
+              </div>
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-2">Quantity</p>
+                <small>{{item.quantity}}</small>
+              </div>
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-3">Price</p>
+                <a *ngFor="let price of item.productPrices">
+                  <small *ngIf="price.productPriceTypeId == 'DEFAULT_PRICE'"><del>{{price.price}}</del></small>
+                  <small *ngIf="price.productPriceTypeId == 'LIST_PRICE'">{{price.price}}</small>
+                </a>
+              </div>
+              <div class="d-flex w-100 justify-content-between">
+                <p class="mb-3">Promotion</p>
+                <a *ngFor="let promo of item.productPromos">
+                  <small><b>{{promo.productPromoCode}}</b></small><br>
+                  <small>From: {{promo.fromDate}} To: {{promo.thruDate}}</small><br>
+                  <small>User Limit per Code: {{promo.useLimitPerCode}} User Limit per Customer {{promo.useLimitPerCustomer}}</small><br>
+                </a>
+              </div>
+            </a>
+          </ul>
+        </div>
+      </div>
+      <button class="btn btn-success float-right" id="save" type="submit">Place Order</button>
+    </form>
+  </div>
+</div>

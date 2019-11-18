@@ -1,9 +1,11 @@
 package com.yash.ecom.server.service;
 
-import com.yash.ecom.server.entity.Product;
+import com.yash.ecom.server.pojo.ProductDetails;
 
 import java.util.List;
 
 public interface ProductService {
-    List<Product> searchProducts(String keywords);
+
+    List<ProductDetails> searchProductsWithDetails(String keywords);
+
 }

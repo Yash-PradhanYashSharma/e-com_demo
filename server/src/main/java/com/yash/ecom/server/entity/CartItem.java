@@ -8,6 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "cart_item", schema = "public", catalog = "e_com_db")
 public class CartItem {
+
     private String userId;
     private String productId;
     private String quantity;

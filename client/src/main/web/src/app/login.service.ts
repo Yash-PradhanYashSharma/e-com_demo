@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {AuthConfig, JwksValidationHandler, OAuthService} from "angular-oauth2-oidc";
-import {AppComponent} from "./app.component";
 
 export const authConfig: AuthConfig = {
   issuer: 'https://dev-589498.okta.com/oauth2/default',
@@ -13,7 +12,7 @@ export const authConfig: AuthConfig = {
 })
 export class LoginService {
 
-  constructor(public oauthService: OAuthService) {
+  constructor(private oauthService: OAuthService) {
     this.configure();
   }
 

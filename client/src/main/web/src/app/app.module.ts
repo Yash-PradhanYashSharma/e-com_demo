@@ -11,6 +11,7 @@ import {MessagesComponent} from './messages/messages.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AutocompleteLibModule} from "angular-ng-autocomplete";
 import {OAuthModule} from 'angular-oauth2-oidc';
+import { AutocompleteModule } from 'ng2-input-autocomplete';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {OAuthModule} from 'angular-oauth2-oidc';
     ReactiveFormsModule,
     PdfViewerModule,
     HttpClientModule,
-    OAuthModule.forRoot()
+    OAuthModule.forRoot(),
+    AutocompleteModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]
