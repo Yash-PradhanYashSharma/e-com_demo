@@ -12,6 +12,8 @@ import {OrderResponse} from "./order/OrderResponse";
 import {CartResponse} from "./class/CartResponse";
 import {OAuthService} from 'angular-oauth2-oidc';
 import {Endpoints} from "./endpoints";
+import {CartItem} from "./class/CartItem";
+import {CartItemDetails} from "./class/CartItemDetails";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +33,7 @@ export class NetworkService {
       catchError(this.handleError<any>('Update Cart', [])));
   }
 
-  productSearch(keyword: String): Observable<any> {
+  productSearch(keyword: String): Observable<CartItemDetails> {
     const finalURL = Endpoints.productSearch + '?keyword=' + keyword;
     return this.http.get(finalURL).pipe(
       catchError(this.handleError<any>('productSearch', []))
@@ -76,6 +78,7 @@ export class NetworkService {
   }
 
   createOrder(cart: Cart): Observable<CartResponse> {
+    console.log(JSON.stringify(cart))
     return this.http.post<CartResponse>(Endpoints.createOrder, JSON.stringify(cart), this.httpOptions).pipe(
       tap((cartResp: CartResponse) => {
         this.log(cartResp.userId, cartResp.status, '');
