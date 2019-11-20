@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {AppComponent} from "./app.component";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {OAuthService} from "angular-oauth2-oidc";
-import {Endpoints} from "./endpoints";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -16,15 +16,15 @@ export class UserService {
   }
 
   getUserDetails() {
-    const finalURL = Endpoints.userDetails;
     const accessToken = this.oauthService.getAccessToken();
-    console.log('accessToken: ', accessToken);
+    //console.log('accessToken: ', accessToken);
     const httpMuleServerOptions = {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + accessToken,
+        'Accept': 'application/json'
       })
     };
-    this.http.get(finalURL, httpMuleServerOptions).subscribe((response) => {
+    this.http.get(environment.userDetails, httpMuleServerOptions).subscribe((response) => {
       console.log(response);
     });
   }
@@ -50,7 +50,7 @@ export class UserService {
       authorization: 'Basic ' + btoa(credentials.username + ':' + credentials.password)
     } : {});
 
-    this.http.get(Endpoints.serverLogin, {headers: headers}).subscribe((response) => {
+    this.http.get(environment.serverLogin, {headers: headers}).subscribe((response) => {
         console.log('Server Login Successful ', response);
       });
   };

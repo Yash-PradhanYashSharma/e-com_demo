@@ -11,7 +11,7 @@ import {MessagesComponent} from './messages/messages.component';
 import {AppRoutingModule} from './app-routing.module';
 import {AutocompleteLibModule} from "angular-ng-autocomplete";
 import {OAuthModule} from 'angular-oauth2-oidc';
-import { AutocompleteModule } from 'ng2-input-autocomplete';
+import {AutocompleteModule} from 'ng2-input-autocomplete';
 
 
 @NgModule({

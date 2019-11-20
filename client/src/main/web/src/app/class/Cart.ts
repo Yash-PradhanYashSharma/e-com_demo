@@ -1,7 +1,9 @@
 import {CartItem} from "./CartItem";
+import {CartAdjustment} from "./CartAdjustment";
 
 export class Cart {
-  userId: string;
-  cartDate: Date;
-  cartItems: CartItem[];
+  userId: string = null;
+  cartDate: Date = new Date();
+  cartItems: CartItem[] = [];
+  cartAdjustments: CartAdjustment[] =  [] ;
 }

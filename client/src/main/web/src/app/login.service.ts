@@ -25,6 +25,7 @@ export class LoginService {
 
   login() {
     this.oauthService.initImplicitFlow();
+    console.log(this.oauthService.getAccessToken());
   }
 
   logout() {

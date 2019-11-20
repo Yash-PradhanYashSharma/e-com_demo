@@ -3,7 +3,7 @@
     <div class="input-group mb-4">
       <div class="ng-autocomplete form-control">
         <ng-autocomplete
-          [data]="data"
+          [data]="showItem"
           [searchKeyword]="keyword"
           (selected)='selectEvent($event)'
           (inputChanged)='onChangeSearch($event)'
@@ -50,12 +50,33 @@
                      type="text">
             </div>
           </div>
+          <div class="col-12">
+            <ul class="list-group">
+              <li class="list-group-item" *ngFor="let adjustment of cart.cartAdjustments">
+                <span *ngIf="adjustment.adjustmentTypeId == 'FREIGHT'">Total Shipment Adjustment: <span
+                  class="float-right">{{adjustment.amount | currency}}</span></span>
+                <span *ngIf="adjustment.adjustmentTypeId == 'TAXES'">Total Tax Adjustment: <span
+                  class="float-right">{{adjustment.amount | currency}}</span></span>
+              </li>
+              <li class="list-group-item">
+              <span *ngIf="this.cartHeaderDetail?.itemTotal !== null">Item Total: <span
+                class="float-right">{{cartHeaderDetail.itemTotal | currency}}</span></span></li>
+              <li class="list-group-item">
+              <span *ngIf="this.cartHeaderDetail?.discountTotal !== null">Discount Total: <span
+                class="float-right">{{cartHeaderDetail.discountTotal | currency}}</span></span>
+              </li>
+              <li class="list-group-item">
+              <span *ngIf="this.cartHeaderDetail?.grandTotal !== null">Grand Total: <span
+                class="float-right">{{cartHeaderDetail.grandTotal | currency}}</span></span>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="col-12">
         <div class="form-group">
           <ul class="list-group">
-            <a *ngFor="let item of cart.cartItems"
+            <a *ngFor="let item of cartItemsDetail"
                class="list-group-item list-group-item-action flex-column align-items-start">
               <button type="button" class="close" aria-label="Close" (click)="removeItem(item.productId)">
                 <span aria-hidden="true">&times;</span>
@@ -72,7 +93,9 @@
               <div class="d-flex w-100 justify-content-between">
                 <p class="mb-3">Price</p>
                 <a *ngFor="let price of item.productPrices">
-                  <small *ngIf="price.productPriceTypeId == 'DEFAULT_PRICE'"><del>{{price.price}}</del></small>
+                  <small *ngIf="price.productPriceTypeId == 'DEFAULT_PRICE'">
+                    <del>{{price.price}}</del>
+                  </small>
                   <small *ngIf="price.productPriceTypeId == 'LIST_PRICE'">{{price.price}}</small>
                 </a>
               </div>
@@ -81,7 +104,8 @@
                 <a *ngFor="let promo of item.productPromos">
                   <small><b>{{promo.productPromoCode}}</b></small><br>
                   <small>From: {{promo.fromDate}} To: {{promo.thruDate}}</small><br>
-                  <small>User Limit per Code: {{promo.useLimitPerCode}} User Limit per Customer {{promo.useLimitPerCustomer}}</small><br>
+                  <small>User Limit per Code: {{promo.useLimitPerCode}} User Limit per
+                    Customer {{promo.useLimitPerCustomer}}</small><br>
                 </a>
               </div>
             </a>

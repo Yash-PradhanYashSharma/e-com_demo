@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 import {Observable, of} from "rxjs";
-import {Endpoints} from "../endpoints";
 import {HttpClient} from "@angular/common/http";
 import {catchError} from "rxjs/operators";
 import {MessageService} from "./message.service";
 import {Message} from "../class/Message";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +15,7 @@ export class NetworkService {
   }
 
   getParty(): Observable<any> {
-    const finalURL = Endpoints.party;
-    console.log('-----------',finalURL);
-    return this.http.get(finalURL).pipe(catchError(this.handleError<any>('getParty', [])));
+    return this.http.get(environment.party).pipe(catchError(this.handleError<any>('getParty', [])));
   }
 
   private handleError<T>(operation = 'operation', result?: T) {
