@@ -10,8 +10,20 @@ public class OrderStatus {
     private String orderStatusId;
     private String orderId;
     private Date updatedDate;
+    /*private Orders orders;*/
 
-    @Id
+    public OrderStatus() {
+		super();
+	}
+
+	public OrderStatus(String orderStatusId, String orderId, Date updatedDate) {
+		super();
+		this.orderStatusId = orderStatusId;
+		this.orderId = orderId;
+		this.updatedDate = updatedDate;
+	}
+
+	@Id
     @Column(name = "orderstatusid", nullable = false, length = 20)
     public String getOrderStatusId() {
         return orderStatusId;
@@ -41,7 +53,18 @@ public class OrderStatus {
         this.updatedDate = updateddate;
     }
 
-    @Override
+    /*
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    public Orders getOrders() {
+		return orders;
+	}
+
+	public void setOrders(Orders orders) {
+		this.orders = orders;
+	}
+
+*/	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

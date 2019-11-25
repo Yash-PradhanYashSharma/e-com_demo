@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class OrderItemPK implements Serializable {
     private String orderId;
-    private BigInteger orderItemSeqId;
+    private Integer orderItemSeqId;
 
     @Column(name = "orderid", nullable = false, length = 20)
     @Id
@@ -22,11 +22,11 @@ public class OrderItemPK implements Serializable {
 
     @Column(name = "orderitemseqid", nullable = false, precision = 0)
     @Id
-    public BigInteger getOrderItemSeqId() {
+    public Integer getOrderItemSeqId() {
         return orderItemSeqId;
     }
 
-    public void setOrderItemSeqId(BigInteger orderitemseqid) {
+    public void setOrderItemSeqId(Integer orderitemseqid) {
         this.orderItemSeqId = orderitemseqid;
     }
 

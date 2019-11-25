@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {NetworkService} from '../network.service';
-import {Cart} from '../class/Cart';
-import {MessageService} from '../message.service';
-import {CartResponse} from '../class/CartResponse';
-import {UserService} from "../user.service";
-import {HttpClient} from "@angular/common/http";
-import {CartItem} from "../class/CartItem";
-import {CartItemDetail} from "../class/CartItemDetail";
-import {CartAdjustment} from "../class/CartAdjustment";
-import {CartHeaderDetail} from "../class/CartHeaderDetail";
+import { HttpClient } from "@angular/common/http";
+import { Component, OnInit } from '@angular/core';
+import { Cart } from '../class/Cart';
+import { CartAdjustment } from "../class/CartAdjustment";
+import { CartHeaderDetail } from "../class/CartHeaderDetail";
+import { CartItem } from "../class/CartItem";
+import { CartItemDetail } from "../class/CartItemDetail";
+import { CartResponse } from '../class/CartResponse';
+import { MessageService } from '../message.service';
+import { NetworkService } from '../network.service';
+import { UserService } from "../user.service";
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-cart',
@@ -35,9 +36,12 @@ export class CartComponent implements OnInit {
     this.cartHeaderDetail.itemTotal = 0;
     this.cartHeaderDetail.discountTotal = 0;
     this.cartHeaderDetail.grandTotal = 0;
-    this.cart.cartAdjustments = [new CartAdjustment('FREIGHT'), new CartAdjustment('TAXES')];
-    this.networkService.initializeCart(this.cart).subscribe((response) => {
+    this.cart.cartAdjustments.userId = this.userService.id;
+    this.cart.cartAdjustments.freightAdjustment.userId = this.cart.cartAdjustments.taxAdjustment.userId = this.cart.cartAdjustments.promoAdjustment.userId = this.userService.id;
+    this.networkService.initializeCart(this.cart).subscribe((response:Cart) => {
       this.cart = response;
+      console.log(Object.assign(new Cart(), cloneDeep(response)));
+      /*this.cart.cartAdjustments = new TotalAdjustment();*/
     });
   }
 
@@ -72,32 +76,24 @@ export class CartComponent implements OnInit {
   }
 
   private calculateAdjustment() {
-    this.cart.cartAdjustments.filter(cartAdjustment => {
-      if (cartAdjustment.adjustmentTypeId == 'FREIGHT') {
-        cartAdjustment.amount = 34;
-      }
-      if (cartAdjustment.adjustmentTypeId == 'TAXES') {
-        cartAdjustment.amount = 20;
-      }
-    });
+    this.cart.cartAdjustments.freightAdjustment.amount =34;
+    this.cart.cartAdjustments.taxAdjustment.amount =20;
     this.cart.cartItems.forEach(item => {
-      var cartItemAdjustment = new CartAdjustment('PROMO');
+      /**Should be an array... */
+      var cartItemAdjustment = this.cart.cartAdjustments.promoAdjustment;
       cartItemAdjustment.productId = item.productId;
       cartItemAdjustment.amount = item.unitPrice * 0.02;
-      this.cart.cartAdjustments.push(cartItemAdjustment);
+      this.cart.cartAdjustments.promoAdjustment = cartItemAdjustment;
     });
-
-
-    let promotionTotal = 0;
-    this.cart.cartAdjustments.forEach(itemAdjustments => {
+    /*this.cart.cartAdjustments.forEach(itemAdjustments => {
       promotionTotal += itemAdjustments.amount;
-    });
+    });*/
     let itemTotalSum = 0;
     this.cart.cartItems.forEach(item => {
       itemTotalSum += item.unitPrice * item.quantity;
     });
     this.cartHeaderDetail.itemTotal = itemTotalSum;
-    this.cartHeaderDetail.discountTotal = promotionTotal;
+    this.cartHeaderDetail.discountTotal = this.cart.cartAdjustments.freightAdjustment.amount+this.cart.cartAdjustments.promoAdjustment.amount+this.cart.cartAdjustments.taxAdjustment.amount;
     this.cartHeaderDetail.grandTotal = this.cartHeaderDetail.itemTotal - this.cartHeaderDetail.discountTotal;
     console.log('-----', this.cart.cartAdjustments);
   }

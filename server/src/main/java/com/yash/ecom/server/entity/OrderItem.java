@@ -10,7 +10,7 @@ import java.util.Objects;
 @IdClass(OrderItemPK.class)
 public class OrderItem {
     private String orderId;
-    private BigInteger orderItemSeqId;
+    private Integer orderItemSeqId;
     private String productId;
     private String quantity;
     private BigDecimal unitPrice;
@@ -27,11 +27,11 @@ public class OrderItem {
 
     @Id
     @Column(name = "orderitemseqid", nullable = false, precision = 0)
-    public BigInteger getOrderItemSeqId() {
+    public Integer getOrderItemSeqId() {
         return orderItemSeqId;
     }
 
-    public void setOrderItemSeqId(BigInteger orderitemseqid) {
+    public void setOrderItemSeqId(Integer orderitemseqid) {
         this.orderItemSeqId = orderitemseqid;
     }
 

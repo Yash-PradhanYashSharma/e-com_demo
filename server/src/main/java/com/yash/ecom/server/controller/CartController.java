@@ -1,6 +1,7 @@
 package com.yash.ecom.server.controller;
 
 import com.yash.ecom.server.entity.Cart;
+import com.yash.ecom.server.entity.TotalAdjustments;
 import com.yash.ecom.server.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class CartController {
         cartObj.setCartDate(cart.getCartDate());
         cartObj.setUserId(cart.getUserId());
         cartObj.setCartItems(cart.getCartItems());
+        cartObj.setCartAdjustments(cart.getCartAdjustments());
         return cartObj;
     }
 

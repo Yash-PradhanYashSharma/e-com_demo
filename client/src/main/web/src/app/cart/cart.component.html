@@ -2,18 +2,9 @@
   <div class="col-12">
     <div class="input-group mb-4">
       <div class="ng-autocomplete form-control">
-        <ng-autocomplete
-          [data]="showItem"
-          [searchKeyword]="keyword"
-          (selected)='selectEvent($event)'
-          (inputChanged)='onChangeSearch($event)'
-          (inputFocused)='onFocused($event)'
-          (inputCleared)='onCleared($event)'
-          placeHolder="Enter the Product Name "
-          historyIdentifier="product"
-          (closed)='onClosed($event)'
-          [itemTemplate]="itemTemplate"
-          [notFoundTemplate]="notFoundTemplate">
+        <ng-autocomplete [data]="showItem" [searchKeyword]="keyword" (selected)='selectEvent($event)' (inputChanged)='onChangeSearch($event)'
+          (inputFocused)='onFocused($event)' (inputCleared)='onCleared($event)' placeHolder="Enter the Product Name "
+          historyIdentifier="product" (closed)='onClosed($event)' [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
         </ng-autocomplete>
         <ng-template #itemTemplate let-item>
           <blockquote class="blockquote">
@@ -35,39 +26,41 @@
             <div class="form-group">
               <label for="userId">User Id</label>
               <input [(ngModel)]="cart.userId" aria-describedby="User Id" disabled class="form-control" id="userId"
-                     name="userId"
-                     placeholder="User Id"
-                     type="text">
+                name="userId" placeholder="User Id" type="text">
             </div>
           </div>
           <div class="col-6">
             <div class="form-group">
               <label for="cartDate">Date</label>
-              <input [(ngModel)]="cart.cartDate" aria-describedby="Cart Date" disabled class="form-control"
-                     id="cartDate"
-                     name="cartDate"
-                     placeholder="Date"
-                     type="text">
+              <input [(ngModel)]="cart.cartDate" aria-describedby="Cart Date" disabled class="form-control" id="cartDate"
+                name="cartDate" placeholder="Date" type="text">
             </div>
           </div>
           <div class="col-12">
             <ul class="list-group">
-              <li class="list-group-item" *ngFor="let adjustment of cart.cartAdjustments">
-                <span *ngIf="adjustment.adjustmentTypeId == 'FREIGHT'">Total Shipment Adjustment: <span
-                  class="float-right">{{adjustment.amount | currency}}</span></span>
-                <span *ngIf="adjustment.adjustmentTypeId == 'TAXES'">Total Tax Adjustment: <span
-                  class="float-right">{{adjustment.amount | currency}}</span></span>
+
+              <ng-template [ngIf]="(cart.cartAdjustments.freightAdjustment.amount > 0)">
+                <li class="list-group-item">
+                  <span>Total Shipment Adjustment:</span> <span class="float-right">{{cart.cartAdjustments.freightAdjustment.amount
+                    | currency}}</span></li>
+              </ng-template>
+              <ng-template [ngIf]="cart.cartAdjustments.taxAdjustment.amount > 0">
+                <li class="list-group-item">
+                  <span>Total Tax Adjustment:</span> <span class="float-right">{{cart.cartAdjustments.taxAdjustment.amount
+                    | currency}}</span>
+
+                </li>
+              </ng-template>
+              <li class="list-group-item">
+                <span *ngIf="this.cartHeaderDetail?.itemTotal !== null">Item Total: <span class="float-right">{{cartHeaderDetail.itemTotal
+                    | currency}}</span></span></li>
+              <li class="list-group-item">
+                <span *ngIf="this.cartHeaderDetail?.discountTotal !== null">Discount Total: <span class="float-right">{{cartHeaderDetail.discountTotal
+                    | currency}}</span></span>
               </li>
               <li class="list-group-item">
-              <span *ngIf="this.cartHeaderDetail?.itemTotal !== null">Item Total: <span
-                class="float-right">{{cartHeaderDetail.itemTotal | currency}}</span></span></li>
-              <li class="list-group-item">
-              <span *ngIf="this.cartHeaderDetail?.discountTotal !== null">Discount Total: <span
-                class="float-right">{{cartHeaderDetail.discountTotal | currency}}</span></span>
-              </li>
-              <li class="list-group-item">
-              <span *ngIf="this.cartHeaderDetail?.grandTotal !== null">Grand Total: <span
-                class="float-right">{{cartHeaderDetail.grandTotal | currency}}</span></span>
+                <span *ngIf="this.cartHeaderDetail?.grandTotal !== null">Grand Total: <span class="float-right">{{cartHeaderDetail.grandTotal
+                    | currency}}</span></span>
               </li>
             </ul>
           </div>
@@ -76,8 +69,7 @@
       <div class="col-12">
         <div class="form-group">
           <ul class="list-group">
-            <a *ngFor="let item of cartItemsDetail"
-               class="list-group-item list-group-item-action flex-column align-items-start">
+            <a *ngFor="let item of cartItemsDetail" class="list-group-item list-group-item-action flex-column align-items-start">
               <button type="button" class="close" aria-label="Close" (click)="removeItem(item.productId)">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -112,7 +104,9 @@
           </ul>
         </div>
       </div>
-      <button class="btn btn-success float-right" id="save" type="submit">Place Order</button>
+      <div class="col-12">
+        <button class="btn btn-success float-right" id="save" type="submit">Place Order</button>
+      </div>
     </form>
   </div>
 </div>

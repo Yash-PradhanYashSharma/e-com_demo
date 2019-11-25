@@ -84,9 +84,9 @@ export class NetworkService {
 
   createOrder(cart: Cart): Observable<CartResponse> {
     console.log('------------',cart);
-    return this.http.post<CartResponse>(environment.createOrder, cart.toString(), this.httpOptions).pipe(
-      tap((cartResp: CartResponse) => {
-        this.log(cartResp.userId, cartResp.status, '');
+    return this.http.post<CartResponse>(environment.order, cart, this.httpOptions).pipe(
+      tap((cartResp: any) => {
+        console.log(cartResp);
       }), catchError(this.handleError<any>('createOrder', [])));
   }
 
