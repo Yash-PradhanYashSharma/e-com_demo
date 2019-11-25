@@ -8,7 +8,7 @@ export const environment = {
   userDetails: `https://dev-589498.okta.com/oauth2/default/v1/userinfo`,
   party: 'http://localhost:8080/party/all',
   partyDetails: 'http://localhost:8080/api/party/all',
-  createOrder: 'http://localhost:8080/order/createOrder',
+  order: 'http://localhost:8080/order',
   cartUrl: 'http://10.26.9.41:8081/v1/api/shipments/cart',
   orderUrl: 'http://10.26.9.41:8081/v1/api/shipments/order',
   invoiceUrl: 'http://10.26.9.41:8081/v1/api/shipments/invoice',
