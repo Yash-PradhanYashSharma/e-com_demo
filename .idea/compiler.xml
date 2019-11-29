@@ -8,18 +8,19 @@
         <outputRelativeToContentRoot value="true" />
         <module name="client" />
         <module name="server" />
+        <module name="mule" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="exp-ecom-api" target="1.5" />
-      <module name="mule" target="1.8" />
+      <module name="mule" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="client" options="-parameters" />
       <module name="ecomdemo" options="-parameters" />
-      <module name="mule" options="-parameters" />
+      <module name="mule" options="" />
       <module name="server" options="-parameters" />
     </option>
   </component>

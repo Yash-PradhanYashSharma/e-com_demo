@@ -2,9 +2,12 @@
   <div class="col-12">
     <div class="input-group mb-4">
       <div class="ng-autocomplete form-control">
-        <ng-autocomplete [data]="showItem" [searchKeyword]="keyword" (selected)='selectEvent($event)' (inputChanged)='onChangeSearch($event)'
-          (inputFocused)='onFocused($event)' (inputCleared)='onCleared($event)' placeHolder="Enter the Product Name "
-          historyIdentifier="product" (closed)='onClosed($event)' [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+        <ng-autocomplete [data]="showItem" [searchKeyword]="keyword" (selected)='selectEvent($event)'
+                         (inputChanged)='onChangeSearch($event)'
+                         (inputFocused)='onFocused($event)' (inputCleared)='onCleared($event)'
+                         placeHolder="Enter the Product Name "
+                         historyIdentifier="product" (closed)='onClosed($event)' [itemTemplate]="itemTemplate"
+                         [notFoundTemplate]="notFoundTemplate">
         </ng-autocomplete>
         <ng-template #itemTemplate let-item>
           <blockquote class="blockquote">
@@ -19,93 +22,97 @@
     </div>
   </div>
   <div class="col-12">
-    <form #cartForm='ngForm' (ngSubmit)="createOrder()" novalidate>
+    <form #FormsModule='ngForm' novalidate>
       <div class="col-12">
         <div class="row">
           <div class="col-6">
-            <div class="form-group">
-              <label for="userId">User Id</label>
-              <input [(ngModel)]="cart.userId" aria-describedby="User Id" disabled class="form-control" id="userId"
-                name="userId" placeholder="User Id" type="text">
-            </div>
+            <ul class="list-group" *ngFor="let cartAdjustment of cart.adjustments">
+              <li class="list-group-item" *ngIf="cartAdjustment.adjustmentTypeId == 'FREIGHT'">
+                Total Shipment Adjustment: <span class="float-right">{{cartAdjustment.amount | currency}}</span>
+              </li>
+              <li class="list-group-item" *ngIf="cartAdjustment.adjustmentTypeId == 'TAXES'">
+                Total Tax Adjustment: <span class="float-right">{{cartAdjustment.amount | currency}}</span>
+              </li>
+            </ul>
+            <ul class="list-group">
+              <li class="list-group-item" *ngIf="cart.discountTotal > 0">
+                Discount Total: <span class="float-right">{{cart.discountTotal | currency}}</span>
+              </li>
+              <li class="list-group-item" *ngIf="cart.itemTotal > 0">
+                Item Total: <span class="float-right">{{cart.itemTotal | currency}}</span>
+              </li>
+              <li class="list-group-item" *ngIf="cart.grandTotal > 0">
+                Grand Total: <span class="float-right">{{cart.grandTotal | currency}}</span>
+              </li>
+            </ul>
           </div>
           <div class="col-6">
             <div class="form-group">
-              <label for="cartDate">Date</label>
-              <input [(ngModel)]="cart.cartDate" aria-describedby="Cart Date" disabled class="form-control" id="cartDate"
-                name="cartDate" placeholder="Date" type="text">
+              <button class="btn btn-success float-right" (click)="createOrder()">Place Order</button>
+              <button class="btn btn-light" (click)="calculateAdjustment()">Refresh</button>
             </div>
-          </div>
-          <div class="col-12">
-            <ul class="list-group">
-
-              <ng-template [ngIf]="(cart.cartAdjustments.freightAdjustment.amount > 0)">
-                <li class="list-group-item">
-                  <span>Total Shipment Adjustment:</span> <span class="float-right">{{cart.cartAdjustments.freightAdjustment.amount
-                    | currency}}</span></li>
-              </ng-template>
-              <ng-template [ngIf]="cart.cartAdjustments.taxAdjustment.amount > 0">
-                <li class="list-group-item">
-                  <span>Total Tax Adjustment:</span> <span class="float-right">{{cart.cartAdjustments.taxAdjustment.amount
-                    | currency}}</span>
-
-                </li>
-              </ng-template>
-              <li class="list-group-item">
-                <span *ngIf="this.cartHeaderDetail?.itemTotal !== null">Item Total: <span class="float-right">{{cartHeaderDetail.itemTotal
-                    | currency}}</span></span></li>
-              <li class="list-group-item">
-                <span *ngIf="this.cartHeaderDetail?.discountTotal !== null">Discount Total: <span class="float-right">{{cartHeaderDetail.discountTotal
-                    | currency}}</span></span>
-              </li>
-              <li class="list-group-item">
-                <span *ngIf="this.cartHeaderDetail?.grandTotal !== null">Grand Total: <span class="float-right">{{cartHeaderDetail.grandTotal
-                    | currency}}</span></span>
-              </li>
-            </ul>
+            <br>
+            <div class="form-group">
+              <label for="userId">User Id</label>
+              <input [(ngModel)]="cart.userId" aria-describedby="User Id" disabled class="form-control" id="userId"
+                     name="userId" placeholder="User Id" type="text">
+            </div>
+            <div class="form-group">
+              <label for="cartDate">Date</label>
+              <input [(ngModel)]="cart.cartDate" aria-describedby="Cart Date" disabled class="form-control"
+                     id="cartDate"
+                     name="cartDate" placeholder="Date" type="text">
+            </div>
           </div>
         </div>
       </div>
       <div class="col-12">
         <div class="form-group">
           <ul class="list-group">
-            <a *ngFor="let item of cartItemsDetail" class="list-group-item list-group-item-action flex-column align-items-start">
+            <a *ngFor="let item of cart.items"
+               class="list-group-item list-group-item-action flex-column align-items-start">
               <button type="button" class="close" aria-label="Close" (click)="removeItem(item.productId)">
                 <span aria-hidden="true">&times;</span>
               </button>
               <h6>{{item.productName}}</h6>
               <div class="d-flex w-100 justify-content-between">
-                <p class="mb-1">Product Description</p>
-                <small>{{item.productDescription}}</small>
+                <p class="mb-1">{{item.productDescription}}</p>
               </div>
               <div class="d-flex w-100 justify-content-between">
                 <p class="mb-2">Quantity</p>
-                <small>{{item.quantity}}</small>
+                <div class="form-row flex-right">
+                  <div class="col-sm-3 my-1">
+                    <label class="sr-only" for="selectedQuantity"></label>
+                    <input type="number" class="form-control form-control-sm flex-right"
+                           id="selectedQuantity" (change)="updateQuantity(item.productId ,$event)">
+                  </div>
+                  <div class="col-sm-3 my-1">
+                    <label class="sr-only" for="value"></label>
+                    <input type="text" class="form-control form-control-sm flex-right" id="value"
+                           placeholder="{{item.quantity}}" disabled>
+                  </div>
+                </div>
               </div>
               <div class="d-flex w-100 justify-content-between">
                 <p class="mb-3">Price</p>
-                <a *ngFor="let price of item.productPrices">
-                  <small *ngIf="price.productPriceTypeId == 'DEFAULT_PRICE'">
-                    <del>{{price.price}}</del>
-                  </small>
-                  <small *ngIf="price.productPriceTypeId == 'LIST_PRICE'">{{price.price}}</small>
-                </a>
+                <div *ngFor="let price of item.productPrices">
+                  <span *ngIf="price.productPriceTypeId == 'DEFAULT_PRICE'"
+                        class="flex-right">{{price.price | currency}}</span>
+                </div>
               </div>
-              <div class="d-flex w-100 justify-content-between">
+              <div class="d-flex w-100">
                 <p class="mb-3">Promotion</p>
-                <a *ngFor="let promo of item.productPromos">
-                  <small><b>{{promo.productPromoCode}}</b></small><br>
-                  <small>From: {{promo.fromDate}} To: {{promo.thruDate}}</small><br>
-                  <small>User Limit per Code: {{promo.useLimitPerCode}} User Limit per
-                    Customer {{promo.useLimitPerCustomer}}</small><br>
-                </a>
+                <div class="custom-control custom-radio" *ngFor="let promo of item.productPromos">
+                  <label>
+                    <input type="radio" name="{{item.productId}}"
+                           (click)="updatePromo(promo.productPromoId, item.productId)">
+                    {{promo.promoName}}
+                  </label>
+                </div>
               </div>
             </a>
           </ul>
         </div>
-      </div>
-      <div class="col-12">
-        <button class="btn btn-success float-right" id="save" type="submit">Place Order</button>
       </div>
     </form>
   </div>

@@ -5,13 +5,13 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "order_adjustment", schema = "public", catalog = "e_com_db")
+@Table(name = "order_adjustment", schema = "public", catalog = "e_com_db2")
 public class OrderAdjustment {
 	
 	@Column(name = "orderadjustmentid", nullable = false, length = 20)
     private String orderAdjustmentId;
 	@Basic
-    @Column(name = "amount", nullable = true, precision = 2)
+    @Column(name = "amount")
     private BigDecimal amount;
     @Basic
     @Column(name = "productpromoid", nullable = true, length = 20)

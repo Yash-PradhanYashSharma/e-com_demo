@@ -8,5 +8,6 @@ export class ProductPromo {
   thruDate: Date;
   productPromoCond: string;
   productPromoAction: string;
+  selected: string;
 }
 

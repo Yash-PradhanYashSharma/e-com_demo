@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product_price", schema = "public", catalog = "e_com_db")
+@Table(name = "product_price", schema = "public", catalog = "e_com_db2")
 @IdClass(ProductPricePK.class)
 public class ProductPrice {
     private String productId;

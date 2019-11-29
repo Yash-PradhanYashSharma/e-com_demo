@@ -5,12 +5,11 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "order_status", schema = "public", catalog = "e_com_db")
+@Table(name = "order_status", schema = "public", catalog = "e_com_db2")
 public class OrderStatus {
-    private String orderStatusId;
     private String orderId;
     private Date updatedDate;
-    /*private Orders orders;*/
+    private String orderStatusId;
 
     public OrderStatus() {
 		super();
@@ -18,9 +17,9 @@ public class OrderStatus {
 
 	public OrderStatus(String orderStatusId, String orderId, Date updatedDate) {
 		super();
-		this.orderStatusId = orderStatusId;
-		this.orderId = orderId;
-		this.updatedDate = updatedDate;
+        this.orderId = orderId;
+        this.updatedDate = updatedDate;
+        this.orderStatusId = orderStatusId;
 	}
 
 	@Id
@@ -33,7 +32,6 @@ public class OrderStatus {
         this.orderStatusId = orderstatusid;
     }
 
-    @Basic
     @Column(name = "orderid", nullable = true, length = 20)
     public String getOrderId() {
         return orderId;
@@ -53,18 +51,7 @@ public class OrderStatus {
         this.updatedDate = updateddate;
     }
 
-    /*
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    public Orders getOrders() {
-		return orders;
-	}
-
-	public void setOrders(Orders orders) {
-		this.orders = orders;
-	}
-
-*/	@Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

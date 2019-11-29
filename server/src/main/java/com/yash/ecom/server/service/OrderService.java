@@ -1,18 +1,25 @@
 package com.yash.ecom.server.service;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.yash.ecom.server.entity.Cart;
 import com.yash.ecom.server.entity.Orders;
 import com.yash.ecom.server.exceptions.CreateOrderException;
+import com.yash.ecom.server.pojo.CartDetails;
+import com.yash.ecom.server.pojo.OrderDetails;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface OrderService {
-	public String createOrder(Cart cart) throws CreateOrderException;
 
-	public List<Orders> getAllOrders();
-	public List<Orders> getAllOrders(String userid);
-	public List<String> getOrdersIds(String startdate,String enddate);
+    String createOrder(CartDetails cart) throws CreateOrderException;
+
+    List<OrderDetails> getAllOrders() throws CreateOrderException;;
+
+    List<OrderDetails> getAllOrders(String userId) throws CreateOrderException;;
+
+    OrderDetails getOrder(String orderId) throws CreateOrderException;;
+
+    List<OrderDetails> getOrdersIds(String startDate, String endDate) throws CreateOrderException;;
+
+    OrderDetails updateStatus(String orderId, String statusId, String invoiceId) throws CreateOrderException;;
 }

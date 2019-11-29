@@ -3,7 +3,6 @@ package com.yash.ecom.server.entity;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -11,27 +10,22 @@ public class Orders {
     private String orderId;
     private Date orderDate;
     private BigDecimal total;
-    private OrderStatus orderStatusByOrderStatusId;
-    
+    private String invoiceId;
+    private String orderStatusId;
+
     @Column(name = "user_id", nullable = true, length = 20)
     private String user_id;
-    
-    public String getUser_id() {
-		return user_id;
-	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
-	}
-	
-	@Transient
-    private List<OrderItem> ordeItems;
-    
-    @Transient
-    private TotalOrderAdjustments adjustments;
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
 
     @Id
-    @Column(name = "orderid", nullable = false, length = 20)
+    @Column(name = "orderid", nullable = false, length = 20, unique = true)
     public String getOrderId() {
         return orderId;
     }
@@ -51,7 +45,7 @@ public class Orders {
     }
 
     @Basic
-    @Column(name = "total", nullable = true, precision = 2)
+    @Column(name = "total")
     public BigDecimal getTotal() {
         return total;
     }
@@ -60,47 +54,24 @@ public class Orders {
         this.total = total;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Orders orders = (Orders) o;
-        return Objects.equals(orderId, orders.orderId) &&
-                Objects.equals(orderDate, orders.orderDate) &&
-                Objects.equals(total, orders.total);
+    @Basic
+    @Column(name = "orderstatusid")
+    public String getOrderStatusId() {
+        return orderStatusId;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(orderId, orderDate, total);
+    public void setOrderStatusId(String orderStatusId) {
+        this.orderStatusId = orderStatusId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "orderstatusid", referencedColumnName = "orderstatusid")
-    public OrderStatus getOrderStatusByOrderStatusId() {
-        return orderStatusByOrderStatusId;
+    @Basic
+    @Column(name = "invoiceid")
+    public String getInvoiceId() {
+        return invoiceId;
     }
 
-    public void setOrderStatusByOrderStatusId(OrderStatus orderStatusByOrderstatusid) {
-        this.orderStatusByOrderStatusId = orderStatusByOrderstatusid;
+    public void setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
     }
-
-    @Transient
-	public List<OrderItem> getOrdeItems() {
-		return ordeItems;
-	}
-
-	@Transient
-	public void setOrdeItems(List<OrderItem> ordeItems) {
-		this.ordeItems = ordeItems;
-	}
-
-	@Transient
-	public TotalOrderAdjustments getAdjustMents() {
-		return adjustments;
-	}
-	@Transient
-	public void setAdjustMents(TotalOrderAdjustments adjustments) {
-		this.adjustments = adjustments;
-	}
 }
+

@@ -7,5 +7,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/e_com_db</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="e_com_db2@localhost" uuid="8c92744a-8504-470e-a641-fd35d480b839">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/e_com_db2</jdbc-url>
+    </data-source>
   </component>
 </project>

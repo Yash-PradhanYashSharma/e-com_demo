@@ -20,7 +20,7 @@ public class OrderItemPK implements Serializable {
         this.orderId = orderid;
     }
 
-    @Column(name = "orderitemseqid", nullable = false, precision = 0)
+    @Column(name = "orderitemseqid")
     @Id
     public Integer getOrderItemSeqId() {
         return orderItemSeqId;

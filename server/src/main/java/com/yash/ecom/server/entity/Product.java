@@ -46,7 +46,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "productwidth", nullable = true, precision = 2)
+    @Column(name = "productwidth")
     public BigDecimal getProductWidth() {
         return productWidth;
     }
@@ -56,7 +56,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "productdepth", nullable = true, precision = 2)
+    @Column(name = "productdepth")
     public BigDecimal getProductDepth() {
         return productDepth;
     }
@@ -66,7 +66,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "productheight", nullable = true, precision = 2)
+    @Column(name = "productheight")
     public BigDecimal getProductHeight() {
         return productHeight;
     }
@@ -76,7 +76,7 @@ public class Product {
     }
 
     @Basic
-    @Column(name = "productweight", nullable = true, precision = 2)
+    @Column(name = "productweight")
     public BigDecimal getProductWeight() {
         return productWeight;
     }

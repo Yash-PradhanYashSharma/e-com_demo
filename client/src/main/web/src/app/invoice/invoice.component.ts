@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {NetworkService} from '../network.service';
-import {Invoice} from './Invoice';
-import {Lines} from './Lines';
+import {NetworkService} from '../service/network.service';
+import {Invoice} from '../class/Invoice';
+import {Lines} from '../class/Lines';
 import {FormControl, FormGroup} from '@angular/forms';
-import {saveAs} from 'file-saver';
-import {MessageService} from '../message.service';
+import {MessageService} from '../service/message.service';
 
 @Component({
   selector: 'app-invoice',
@@ -29,17 +28,21 @@ export class InvoiceComponent implements OnInit {
   }
 
   getInvoice(): void {
+    /*
+  in_1Fjjd4LtNhj8WVidJeDHkKOP
+     */
     this.networkService.getInvoice(this.invoiceForm.value).subscribe(res => {
       this.invoiceValue = res;
-      const lines = res['lines'];
-      this.lines = lines['data'];
+      //console.log(res)
     });
   }
 
   getInvoicePDF() {
     this.networkService.getInvoicePDF(this.invoiceForm.value).subscribe((response) => {
-      let file = new Blob([response], { type: 'application/pdf' });
-      saveAs(file, 'invoice.pdf');
+      console.log('-----', response.url);
+      this.networkService.showInvoicePDF(response.url).subscribe(data => {
+        window.location.href = URL.createObjectURL(data);
+      });
     });
   }
 }

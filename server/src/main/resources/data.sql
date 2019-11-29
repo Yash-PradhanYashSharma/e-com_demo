@@ -30,7 +30,7 @@ values ('SPECIAL_PROMO_PRICE', 'Special Promo Price');
 
 insert into public.product_promo (productpromoid, fromdate, productpromoaction, productpromocode, productpromocond,
                                   promoname, thrudate, uselimitpercode, uselimitpercustomer)
-values (1, '2019-11-06', '10 % Discount', 'DISC_TEN', 'NEW_USER', 'NEWUSERTEN', '2020-11-06', 1, 1);
+values (2, '2019-11-06', '20 % Discount', '20%Disc', 'ALL_ITEM', '20DISC', '2020-11-06', 10, 100);
 
 
 insert into public.product_type (productTypeId, parentTypeId, childProductType, productId)

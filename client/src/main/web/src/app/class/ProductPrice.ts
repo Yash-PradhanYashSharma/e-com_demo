@@ -6,5 +6,5 @@ export class ProductPrice {
   thruDate: string;
   price: number;
   productByProductId: string;
-
+  selected:boolean = false;
 }

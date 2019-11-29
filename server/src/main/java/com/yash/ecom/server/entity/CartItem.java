@@ -10,12 +10,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "cart_item", schema = "public", catalog = "e_com_db")
+@Table(name = "cart_item", schema = "public", catalog = "e_com_db2")
 public class CartItem {
 
     private String userId;
     private String productId;
-    private String quantity;
+    private BigDecimal quantity;
     private BigDecimal unitPrice;
 
     @Id
@@ -39,17 +39,17 @@ public class CartItem {
     }
 
     @Basic
-    @Column(name = "quantity", nullable = false, length = 20)
-    public String getQuantity() {
+    @Column(name = "quantity")
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 
     @Basic
-    @Column(name = "unitprice", nullable = true, precision = 2)
+    @Column(name = "unitprice")
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }

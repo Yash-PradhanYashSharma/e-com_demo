@@ -3,17 +3,21 @@ package com.yash.ecom.server.pojo;
 import com.yash.ecom.server.entity.ProductPrice;
 import com.yash.ecom.server.entity.ProductPromo;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
 public class ProductDetails {
+
     private String productId;
+    private Integer quantity;
+    private Integer selectedQuantity;
+    private BigDecimal price;
     private String productName;
     private String productDescription;
+    private String inventoryItemStatus;
     private List<ProductPromo> productPromos;
     private List<ProductPrice> productPrices;
-    private Integer quantity;
-    private String inventoryItemStatus;
 
     public String getProductId() {
         return productId;
@@ -88,5 +92,21 @@ public class ProductDetails {
     @Override
     public int hashCode() {
         return Objects.hash(getProductId(), getProductName(), getProductDescription(), getProductPromos(), getProductPrices(), getQuantity(), getInventoryItemStatus());
+    }
+
+    public Integer getSelectedQuantity() {
+        return selectedQuantity;
+    }
+
+    public void setSelectedQuantity(Integer selectedQuantity) {
+        this.selectedQuantity = selectedQuantity;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

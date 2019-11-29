@@ -1,15 +1,9 @@
-import { HttpClient } from "@angular/common/http";
-import { Component, OnInit } from '@angular/core';
-import { Cart } from '../class/Cart';
-import { CartAdjustment } from "../class/CartAdjustment";
-import { CartHeaderDetail } from "../class/CartHeaderDetail";
-import { CartItem } from "../class/CartItem";
-import { CartItemDetail } from "../class/CartItemDetail";
-import { CartResponse } from '../class/CartResponse';
-import { MessageService } from '../message.service';
-import { NetworkService } from '../network.service';
-import { UserService } from "../user.service";
-import { cloneDeep } from 'lodash';
+import {HttpClient} from "@angular/common/http";
+import {Component, OnInit} from '@angular/core';
+import {ADJUSTMENT_TYPES, Cart, CartAdjustment} from '../class/Cart';
+import {MessageService} from '../service/message.service';
+import {NetworkService} from '../service/network.service';
+import {UserService} from "../service/user.service";
 
 @Component({
   selector: 'app-cart',
@@ -18,12 +12,9 @@ import { cloneDeep } from 'lodash';
 })
 export class CartComponent implements OnInit {
 
-  private showItem: any[];
-  private keyword = 'productName';
-  private cart: Cart;
-  private cartResponse: CartResponse;
-  private cartItemsDetail: CartItemDetail[] = new Array<CartItemDetail>();
-  private cartHeaderDetail = new CartHeaderDetail();
+  showItem: any[];
+  keyword = 'productName';
+  cart: Cart;
 
   constructor(private networkService: NetworkService, private messageService: MessageService, private userService: UserService, private http: HttpClient) {
     messageService.clear();
@@ -33,36 +24,42 @@ export class CartComponent implements OnInit {
     this.cart = new Cart();
     this.cart.userId = this.userService.id;
     this.cart.cartDate = new Date();
-    this.cartHeaderDetail.itemTotal = 0;
-    this.cartHeaderDetail.discountTotal = 0;
-    this.cartHeaderDetail.grandTotal = 0;
-    this.cart.cartAdjustments.userId = this.userService.id;
-    this.cart.cartAdjustments.freightAdjustment.userId = this.cart.cartAdjustments.taxAdjustment.userId = this.cart.cartAdjustments.promoAdjustment.userId = this.userService.id;
-    this.networkService.initializeCart(this.cart).subscribe((response:Cart) => {
-      this.cart = response;
-      console.log(Object.assign(new Cart(), cloneDeep(response)));
-      /*this.cart.cartAdjustments = new TotalAdjustment();*/
+    this.networkService.initializeCart(this.cart).subscribe((response) => {
+      this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.TAXES, 20));
+      this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.FREIGHT, 80));
     });
   }
 
   selectEvent(item) {
-    const cartItem = new CartItem();
-    cartItem.productId = item.productId;
-    cartItem.quantity = item.quantity;
-    item.productPrices.forEach(prices => {
-      if (prices.productPriceTypeId == 'LIST_PRICE') {
-        cartItem.unitPrice = prices.price;
-      }
-    });
-    this.cart.cartItems.push(cartItem);
-    this.cartItemsDetail.push(item);
-    this.refresh();
+    this.cart.items.push(item);
+    this.calculateAdjustment();
   }
 
   removeItem(productId) {
-    this.cart.cartItems = this.cart.cartItems.filter(item => item.productId !== productId);
-    this.cartItemsDetail = this.cartItemsDetail.filter(item => item.productId !== productId);
-    this.refresh();
+    this.cart.items = this.cart.items.filter(item => item.productId !== productId);
+    this.cart.adjustments = this.cart.adjustments.filter(function (e) {
+      return e.productId !== productId
+    });
+    this.calculateAdjustment();
+  }
+
+
+  updateQuantity(productId, event) {
+    this.cart.items.forEach(cartItemDetail => {
+      if (cartItemDetail.productId == productId) {
+        cartItemDetail.selectedQuantity = event.target.value;
+      }
+    });
+    this.calculateAdjustment();
+  }
+
+  updatePromo(productPromoId, productId) {
+    this.cart.items.forEach(cartItemDetail => {
+      if (cartItemDetail.productId == productId) {
+        cartItemDetail.selectedProductPromoId = productPromoId;
+      }
+    });
+    this.calculateAdjustment();
   }
 
   onChangeSearch(val: string) {
@@ -71,36 +68,43 @@ export class CartComponent implements OnInit {
     }, error => console.log(error));
   }
 
-  refresh() {
-    this.calculateAdjustment();
-  }
+  calculateAdjustment() {
+    this.cart.itemTotal = 0;
+    this.cart.discountTotal = 0;
+    this.cart.grandTotal = 0;
+    let shipmentTotal = 0;
+    let discountTotal = 0;
+    this.cart.items.forEach(item => {
+      if (item.selectedProductPromoId != null) {
+        item.productPromos.forEach(promo => {
+          this.cart.adjustments = this.cart.adjustments.filter(function (e) {
+            return e.productId !== item.productId
+          });
+          item.productPrices.forEach(price => {
+            if (price.productId == item.productId) {
+              this.cart.adjustments.push(new CartAdjustment(item.productId, ADJUSTMENT_TYPES.PROMO, price.price));
+            }
+          });
+        });
+      }
+      this.cart.itemTotal += item.price * item.selectedQuantity;
+    });
 
-  private calculateAdjustment() {
-    this.cart.cartAdjustments.freightAdjustment.amount =34;
-    this.cart.cartAdjustments.taxAdjustment.amount =20;
-    this.cart.cartItems.forEach(item => {
-      /**Should be an array... */
-      var cartItemAdjustment = this.cart.cartAdjustments.promoAdjustment;
-      cartItemAdjustment.productId = item.productId;
-      cartItemAdjustment.amount = item.unitPrice * 0.02;
-      this.cart.cartAdjustments.promoAdjustment = cartItemAdjustment;
+    this.cart.adjustments.forEach(item => {
+      if (item.adjustmentTypeId == ADJUSTMENT_TYPES.FREIGHT || item.adjustmentTypeId == ADJUSTMENT_TYPES.TAXES) {
+        shipmentTotal += item.amount;
+      }
+      if (item.adjustmentTypeId == ADJUSTMENT_TYPES.PROMO) {
+        discountTotal += item.amount;
+      }
     });
-    /*this.cart.cartAdjustments.forEach(itemAdjustments => {
-      promotionTotal += itemAdjustments.amount;
-    });*/
-    let itemTotalSum = 0;
-    this.cart.cartItems.forEach(item => {
-      itemTotalSum += item.unitPrice * item.quantity;
-    });
-    this.cartHeaderDetail.itemTotal = itemTotalSum;
-    this.cartHeaderDetail.discountTotal = this.cart.cartAdjustments.freightAdjustment.amount+this.cart.cartAdjustments.promoAdjustment.amount+this.cart.cartAdjustments.taxAdjustment.amount;
-    this.cartHeaderDetail.grandTotal = this.cartHeaderDetail.itemTotal - this.cartHeaderDetail.discountTotal;
-    console.log('-----', this.cart.cartAdjustments);
+    this.cart.discountTotal = discountTotal;
+    this.cart.grandTotal = this.cart.itemTotal - discountTotal + shipmentTotal;
   }
 
   createOrder() {
     this.networkService.createOrder(this.cart).subscribe((res) => {
-      this.cartResponse = res;
+      this.cart.cartResponse = res;
     });
   }
 

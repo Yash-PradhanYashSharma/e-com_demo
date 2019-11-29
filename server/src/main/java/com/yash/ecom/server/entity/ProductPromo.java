@@ -5,7 +5,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product_promo", schema = "public", catalog = "e_com_db")
+@Table(name = "product_promo", schema = "public", catalog = "e_com_db2")
 public class ProductPromo {
     private String productPromoId;
     private String promoName;

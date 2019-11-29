@@ -10,3 +10,10 @@ buildNumber.properties
 
 # Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
 !/.mvn/wrapper/maven-wrapper.jar
+src/main/resources/static/
+src/main/resources/templates/
+/client/src/main/web/dist/
+/client/src/main/web/e2e/
+/client/src/main/web/node/
+/client/src/main/web/node_modules/
+/client/src/main/web/out-tsc/

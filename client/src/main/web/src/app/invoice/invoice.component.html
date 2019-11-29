@@ -4,7 +4,7 @@
     <form (ngSubmit)="getInvoice()" [formGroup]="invoiceForm" novalidate>
       <div class="input-group mb-3">
         <input aria-describedby="invoice-id" aria-label="Invoice Id" class="form-control" formControlName="invoiceId"
-               placeholder="Invoice Id" type="number">
+               placeholder="Invoice Id" type="text">
         <div class="input-group-append">
           <button class="btn btn-outline-primary" id="invoice-id" type="submit">Show Invoice</button>
           <button (click)="getInvoicePDF()" class="btn btn-outline-primary" id="invoice-pdf-id">Show PDF</button>

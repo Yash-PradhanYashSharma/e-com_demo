@@ -44,20 +44,26 @@ public class ProductServiceImpl implements ProductService {
             details.setProductDescription(product.getDescription());
             InventoryItem inventoryItem = product.getInventoryItemByInventoryItemId();
             details.setQuantity(inventoryItem.getQuantity());
+            details.setSelectedQuantity(inventoryItem.getQuantity());
+
 
             List<ProductPrice> productPriceList = new ArrayList<>();
             List<ProductPrice> productPrices = productPriceRepository.findByProductId(product.getProductId());
             productPrices.forEach(productPrice -> {
                 ProductPrice price = new ProductPrice();
                 price.setPrice(productPrice.getPrice());
+                price.setProductId(productPrice.getProductId());
                 price.setDescription(productPrice.getDescription());
                 price.setProductPriceTypeId(productPrice.getProductPriceTypeId());
+                if (productPrice.getProductPriceTypeId().equals("DEFAULT_PRICE")) {
+                    details.setPrice(productPrice.getPrice());
+                }
                 productPriceList.add(price);
             });
             details.setProductPrices(productPriceList);
 
             List<ProductPromo> productPromoList = new ArrayList<>();
-            List<ProductPromo> productPromos = productPromoRepository.findByProductPromoId("1");
+            Iterable<ProductPromo> productPromos = productPromoRepository.findAll();
             productPromos.forEach(productPromo -> {
                 ProductPromo promo = new ProductPromo();
                 promo.setProductPromoId(productPromo.getProductPromoId());
@@ -72,7 +78,6 @@ public class ProductServiceImpl implements ProductService {
             productDetails.add(details);
             details.setProductPromos(productPromoList);
         });
-
 
         return productDetails;
     }
