@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {NetworkService} from '../service/network.service';
 import {FormControl, FormGroup} from '@angular/forms';
 import {MessageService} from '../service/message.service';
-import {saveAs} from 'file-saver';
 import {OrderDetails} from "../class/Order";
 import {UserService} from "../service/user.service";
+import {Router} from "@angular/router";
+import {saveAs} from 'file-saver';
 
 @Component({
   selector: 'app-order',
@@ -21,16 +22,17 @@ export class OrderComponent implements OnInit {
   orderDetails: OrderDetails[] = new Array<OrderDetails>();
   private order: any;
 
-  constructor(private networkService: NetworkService, private messageService: MessageService, private userService: UserService) {
+  constructor(private networkService: NetworkService, private messageService: MessageService,
+              private userService: UserService, private router: Router) {
     messageService.clear();
   }
 
   ngOnInit() {
   }
 
+
   getOrder(): void {
     this.order = this.orderForm.value;
-    console.log(this.order.orderId);
     this.networkService.getOrder(this.order.orderId).subscribe((res) => {
       this.orderDetail = res;
       this.showHide = false;
@@ -42,10 +44,7 @@ export class OrderComponent implements OnInit {
     this.networkService.getUserOrder(this.userService.id).subscribe((res) => {
       console.log(res);
       res.forEach(value => {
-        console.log("value", value);
-        let order: OrderDetails;
-        order = value;
-        this.orderDetails.push(order);
+        this.orderDetails.push(value);
       });
       this.showHide = true;
     });

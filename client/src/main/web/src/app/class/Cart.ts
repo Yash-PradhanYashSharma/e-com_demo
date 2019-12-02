@@ -12,12 +12,11 @@ export class Cart {
   cartResponse: CartResponse = new CartResponse();
 }
 
-export const ADJUSTMENT_TYPES =
-  {
-    FREIGHT: 'FREIGHT',
-    TAXES: 'TAXES',
-    PROMO: 'PROMO'
-  };
+export const ADJUSTMENT_TYPES = {
+  FREIGHT: 'FREIGHT',
+  TAXES: 'TAXES',
+  PROMO: 'PROMO'
+};
 
 export class CartAdjustment {
   productId: string = null;
@@ -34,6 +33,10 @@ export class CartAdjustment {
 export class ItemDetail {
   productId: string = null;
   price: number = 0;
+  productWidth: number = 0;
+  productDepth: number = 0;
+  productHeight: number = 0;
+  productWeight: number = 0;
   quantity: number = 0;
   selectedQuantity: number = 0;
   selectedProductPromoId: string = null;

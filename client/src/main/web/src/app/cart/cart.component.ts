@@ -4,11 +4,11 @@ import {ADJUSTMENT_TYPES, Cart, CartAdjustment} from '../class/Cart';
 import {MessageService} from '../service/message.service';
 import {NetworkService} from '../service/network.service';
 import {UserService} from "../service/user.service";
+import {Shipment} from "../class/Shipment";
 
 @Component({
   selector: 'app-cart',
-  templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.css']
+  templateUrl: './cart.component.html'
 })
 export class CartComponent implements OnInit {
 
@@ -25,8 +25,8 @@ export class CartComponent implements OnInit {
     this.cart.userId = this.userService.id;
     this.cart.cartDate = new Date();
     this.networkService.initializeCart(this.cart).subscribe((response) => {
-      this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.TAXES, 20));
-      this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.FREIGHT, 80));
+      this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.TAXES, 0));
+      this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.FREIGHT, 0));
     });
   }
 
@@ -47,7 +47,8 @@ export class CartComponent implements OnInit {
   updateQuantity(productId, event) {
     this.cart.items.forEach(cartItemDetail => {
       if (cartItemDetail.productId == productId) {
-        cartItemDetail.selectedQuantity = event.target.value;
+        console.log(event.target.value);
+        cartItemDetail.selectedQuantity = Number(event.target.value);
       }
     });
     this.calculateAdjustment();
@@ -74,32 +75,64 @@ export class CartComponent implements OnInit {
     this.cart.grandTotal = 0;
     let shipmentTotal = 0;
     let discountTotal = 0;
+    let widthTotal = 0;
+    let depthTotal = 0;
+    let heightTotal = 0;
+    let weightTotal = 0;
+    let taxTotal = 0;
+    let itemTotal = 0;
     this.cart.items.forEach(item => {
       if (item.selectedProductPromoId != null) {
         item.productPromos.forEach(promo => {
-          this.cart.adjustments = this.cart.adjustments.filter(function (e) {
-            return e.productId !== item.productId
+          this.cart.adjustments = this.cart.adjustments.filter(function (cartAdjustment) {
+            return cartAdjustment.productId !== item.productId
           });
           item.productPrices.forEach(price => {
-            if (price.productId == item.productId) {
+            if (price.productId == item.productId && price.productPriceTypeId == "LIST_PRICE") {
               this.cart.adjustments.push(new CartAdjustment(item.productId, ADJUSTMENT_TYPES.PROMO, price.price));
             }
           });
         });
       }
-      this.cart.itemTotal += item.price * item.selectedQuantity;
+      taxTotal += item.price * 0.18;
+
+      widthTotal += item.productWidth;
+      depthTotal += item.productDepth;
+      heightTotal += item.productHeight;
+      weightTotal += item.productWeight;
+      itemTotal += item.price * item.selectedQuantity;
     });
 
-    this.cart.adjustments.forEach(item => {
-      if (item.adjustmentTypeId == ADJUSTMENT_TYPES.FREIGHT || item.adjustmentTypeId == ADJUSTMENT_TYPES.TAXES) {
-        shipmentTotal += item.amount;
+    this.cart.adjustments.filter(function (cartAdjustment) {
+      if (cartAdjustment.adjustmentTypeId == ADJUSTMENT_TYPES.TAXES) {
+        cartAdjustment.amount = taxTotal;
       }
+    });
+
+
+/*    this.networkService.getFreight(new Shipment(widthTotal, depthTotal, heightTotal, weightTotal))
+      .subscribe(resp => {
+        shipmentTotal = resp;
+        this.cart.adjustments.filter(function (cartAdjustment) {
+          if (cartAdjustment.adjustmentTypeId == ADJUSTMENT_TYPES.FREIGHT) {
+            cartAdjustment.amount = shipmentTotal;
+          }
+        });
+      });*/
+
+    this.cart.adjustments.forEach(item => {
       if (item.adjustmentTypeId == ADJUSTMENT_TYPES.PROMO) {
         discountTotal += item.amount;
       }
     });
+
     this.cart.discountTotal = discountTotal;
-    this.cart.grandTotal = this.cart.itemTotal - discountTotal + shipmentTotal;
+    this.cart.itemTotal = itemTotal;
+    console.log("Discount Total : " + discountTotal);
+    console.log("Shipment Total : " + shipmentTotal);
+    console.log("Tax Total : " + taxTotal);
+    console.log("Item Total : " + itemTotal);
+    this.cart.grandTotal = itemTotal - discountTotal + shipmentTotal + taxTotal;
   }
 
   createOrder() {

@@ -42,9 +42,14 @@ public class ProductServiceImpl implements ProductService {
             details.setProductId(product.getProductId());
             details.setProductName(product.getProductName());
             details.setProductDescription(product.getDescription());
+            details.setProductHeight(product.getProductHeight());
+            details.setProductDepth(product.getProductDepth());
+            details.setProductWeight(product.getProductWeight());
+            details.setProductWidth(product.getProductWidth());
+
             InventoryItem inventoryItem = product.getInventoryItemByInventoryItemId();
             details.setQuantity(inventoryItem.getQuantity());
-            details.setSelectedQuantity(inventoryItem.getQuantity());
+            details.setSelectedQuantity(1);
 
 
             List<ProductPrice> productPriceList = new ArrayList<>();

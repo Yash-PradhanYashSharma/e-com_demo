@@ -7,7 +7,7 @@
                placeholder="Order Id" type="text">
         <div class="input-group-append">
           <button class="btn btn-outline-primary" id="order-id" (click)="getOrder()">Order</button>
-          <!--<button class="btn btn-outline-primary" id="invoice-pdf-id" (click)="getOrderPDF()">Show PDF</button>-->
+          <button class="btn btn-outline-primary" id="invoice-pdf-id" (click)="getOrderPDF()">PDF</button>
           <button class="btn btn-outline-primary" id="user-order-id" (click)="getUserOrder()">My Orders</button>
         </div>
       </div>
@@ -20,7 +20,7 @@
               <a class="list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-between">
                   <p class="mb-1">User </p>
-                  <small>{{orderDetail.orders.user_id }}</small>
+                  <small>{{orderDetail.orders.user_id}}</small>
                 </div>
               </a>
               <a class="list-group-item list-group-item-action flex-column align-items-start">
@@ -33,6 +33,16 @@
                 <div class="d-flex w-100 justify-content-between">
                   <p class="mb-1">Order </p>
                   <small>{{orderDetail.orders.orderId }}</small>
+                </div>
+              </a>
+              <a class="list-group-item list-group-item-action flex-column align-items-start" *ngIf="orderDetail.orders.invoiceId !== null">
+                <div class="d-flex w-100 justify-content-between">
+                  <p class="mb-1">Invoice</p>
+                  <small>
+                    <button class="btn btn-outline-primary" id="invoice-id"
+                            [routerLink]="['/invoice', orderDetail.orders.invoiceId]">Invoice
+                    </button>
+                  </small>
                 </div>
               </a>
             </ul>
@@ -107,20 +117,20 @@
                     <ul class="list-group">
                       <a class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">User </p>
-                          <small>{{orderDetail.orders.user_id }}</small>
+                          <p class="mb-1">User</p>
+                          <small>{{orderDetail.orders.user_id}}</small>
                         </div>
                       </a>
                       <a class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">Date </p>
+                          <p class="mb-1">Date</p>
                           <small>{{orderDetail.orders.orderDate}}</small>
                         </div>
                       </a>
                       <a class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">Order </p>
-                          <small>{{orderDetail.orders.orderId }}</small>
+                          <p class="mb-1">Order</p>
+                          <small>{{orderDetail.orders.orderId}}</small>
                         </div>
                       </a>
                     </ul>
@@ -132,7 +142,7 @@
                       <a class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
                           <p class="mb-1">Status </p>
-                          <small>{{orderDetail.orders.orderStatusId }}</small>
+                          <small>{{orderDetail.orders.orderStatusId}}</small>
                         </div>
                       </a>
                       <a *ngFor="let role of orderDetail.roles"

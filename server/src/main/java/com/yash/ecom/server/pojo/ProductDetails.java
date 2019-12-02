@@ -11,6 +11,10 @@ public class ProductDetails {
 
     private String productId;
     private Integer quantity;
+    private BigDecimal productWidth;
+    private BigDecimal productDepth;
+    private BigDecimal productHeight;
+    private BigDecimal productWeight;
     private Integer selectedQuantity;
     private BigDecimal price;
     private String productName;
@@ -73,6 +77,38 @@ public class ProductDetails {
 
     public void setProductPrices(List<ProductPrice> productPrices) {
         this.productPrices = productPrices;
+    }
+
+    public BigDecimal getProductWidth() {
+        return productWidth;
+    }
+
+    public void setProductWidth(BigDecimal productWidth) {
+        this.productWidth = productWidth;
+    }
+
+    public BigDecimal getProductDepth() {
+        return productDepth;
+    }
+
+    public void setProductDepth(BigDecimal productDepth) {
+        this.productDepth = productDepth;
+    }
+
+    public BigDecimal getProductHeight() {
+        return productHeight;
+    }
+
+    public void setProductHeight(BigDecimal productHeight) {
+        this.productHeight = productHeight;
+    }
+
+    public BigDecimal getProductWeight() {
+        return productWeight;
+    }
+
+    public void setProductWeight(BigDecimal productWeight) {
+        this.productWeight = productWeight;
     }
 
     @Override

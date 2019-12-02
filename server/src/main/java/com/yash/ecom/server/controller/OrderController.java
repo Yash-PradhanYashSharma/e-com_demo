@@ -2,14 +2,13 @@ package com.yash.ecom.server.controller;
 
 import com.yash.ecom.server.exceptions.CreateOrderException;
 import com.yash.ecom.server.pojo.CartDetails;
-import com.yash.ecom.server.pojo.OrderDetails;
+import com.yash.ecom.server.pojo.Order;
 import com.yash.ecom.server.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -49,6 +48,11 @@ public class OrderController {
     @RequestMapping(method = RequestMethod.GET, path = "/getOrder")
     public ResponseEntity<?> getOrder(@RequestParam(name = "orderId") String orderId) throws CreateOrderException {
         return ResponseEntity.ok(orderService.getOrder(orderId));
+    }
+
+    @RequestMapping(method = RequestMethod.POST, path = "/getOrderSpring")
+    public ResponseEntity<?> getOrderSpring(@RequestBody Order order) throws CreateOrderException {
+        return ResponseEntity.ok(orderService.getOrder(order.getOrderId()));
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/updateStatus")

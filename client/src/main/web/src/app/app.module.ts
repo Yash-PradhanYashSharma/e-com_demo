@@ -30,7 +30,6 @@ import {AutocompleteModule} from 'ng2-input-autocomplete';
     AppRoutingModule,
     ReactiveFormsModule,
     PdfViewerModule,
-    HttpClientModule,
     OAuthModule.forRoot(),
     AutocompleteModule.forRoot()
   ],

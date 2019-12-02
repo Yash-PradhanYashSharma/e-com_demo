@@ -1,4 +1,0 @@
-{
-  "configs": ["mule.xml"],
-  "minMuleVersion": "4.2.2"
-}

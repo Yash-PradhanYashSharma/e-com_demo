@@ -2,8 +2,8 @@ export class ProductPrice {
   productId: string;
   productPriceTypeId: string;
   description: string;
-  fromDate: string;
-  thruDate: string;
+  fromDate: Date;
+  thruDate: Date;
   price: number;
   productByProductId: string;
   selected:boolean = false;

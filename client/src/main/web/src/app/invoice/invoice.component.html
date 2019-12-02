@@ -1,16 +1,16 @@
 <h3></h3>
 <div class="row">
   <div class="col-12">
-    <form (ngSubmit)="getInvoice()" [formGroup]="invoiceForm" novalidate>
+<!--    <form (ngSubmit)="getInvoice()" [formGroup]="invoiceForm" novalidate>
       <div class="input-group mb-3">
         <input aria-describedby="invoice-id" aria-label="Invoice Id" class="form-control" formControlName="invoiceId"
                placeholder="Invoice Id" type="text">
         <div class="input-group-append">
-          <button class="btn btn-outline-primary" id="invoice-id" type="submit">Show Invoice</button>
-          <button (click)="getInvoicePDF()" class="btn btn-outline-primary" id="invoice-pdf-id">Show PDF</button>
+          <button class="btn btn-outline-primary" id="invoice-id" type="submit">Invoice</button>
+          <button (click)="getInvoicePDF()" class="btn btn-outline-primary" id="invoice-pdf-id">PDF</button>
         </div>
       </div>
-    </form>
+    </form>-->
     <div *ngIf="invoiceValue != undefined" class="card w-100">
       <h5 class="card-header">Sales Invoice</h5>
       <div class="card-body">

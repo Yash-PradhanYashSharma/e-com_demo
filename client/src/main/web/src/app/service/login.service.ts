@@ -22,6 +22,7 @@ export class LoginService {
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
     this.oauthService.setupAutomaticSilentRefresh();
+    console.log(this.oauthService.getAccessToken());
   }
 
   login() {
@@ -45,9 +46,18 @@ export class LoginService {
     };
   }
 
+  mulePdfHttpOptions() {
+    const accessToken = this.oauthService.getAccessToken();
+    return {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + accessToken,
+        'Content-Type': 'application/json'
+      }), responseType: 'blob' as 'json'
+    };
+  }
+
   stripeHttpOptions() {
     const accessToken = this.oauthService.getAccessToken();
-    //console.log('accessToken: ', accessToken);
     return {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + accessToken,

@@ -1,45 +1,42 @@
 import {Component, OnInit} from '@angular/core';
-import {NetworkService} from '../service/network.service';
-import {Invoice} from '../class/Invoice';
-import {Lines} from '../class/Lines';
-import {FormControl, FormGroup} from '@angular/forms';
+import {Invoice, Lines} from '../class/Invoice';
 import {MessageService} from '../service/message.service';
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {switchMap} from "rxjs/operators";
+import {NetworkService} from "../service/network.service";
 
 @Component({
   selector: 'app-invoice',
-  templateUrl: './invoice.component.html',
-  styleUrls: ['./invoice.component.css']
+  templateUrl: './invoice.component.html'
 })
 export class InvoiceComponent implements OnInit {
 
   invoiceValue: Invoice;
-  lines: Lines[];
-  src2: string;
+  lines: Lines;
+  invoiceId: string;
 
-  invoiceForm = new FormGroup({
-    invoiceId: new FormControl(''),
-  });
-
-  constructor(private networkService: NetworkService, private messageService: MessageService) {
+  constructor(private messageService: MessageService, private route: ActivatedRoute, private networkService: NetworkService) {
     messageService.clear();
   }
 
   ngOnInit() {
+    this.route.paramMap.pipe(
+      switchMap((params: ParamMap) =>
+        this.invoiceId = params.get('id'))).subscribe(resp => {
+      this.getInvoice(this.invoiceId);
+    });
   }
 
-  getInvoice(): void {
-    /*
-  in_1Fjjd4LtNhj8WVidJeDHkKOP
-     */
-    this.networkService.getInvoice(this.invoiceForm.value).subscribe(res => {
+  getInvoice(invoiceId): void {
+    this.networkService.getInvoice(invoiceId).subscribe(res => {
       this.invoiceValue = res;
-      //console.log(res)
+      this.lines = res['lines']['data'];
+      console.log(res)
     });
   }
 
   getInvoicePDF() {
-    this.networkService.getInvoicePDF(this.invoiceForm.value).subscribe((response) => {
-      console.log('-----', response.url);
+    this.networkService.getInvoicePDF(this.invoiceId).subscribe((response) => {
       this.networkService.showInvoicePDF(response.url).subscribe(data => {
         window.location.href = URL.createObjectURL(data);
       });

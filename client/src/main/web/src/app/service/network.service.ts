@@ -5,11 +5,11 @@ import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
 import {Order, OrderDetails} from '../class/Order';
-import {InvoiceRequest} from '../class/InvoiceRequest';
 import {Message} from '../class/Message';
 import {Invoice} from '../class/Invoice';
 import {environment} from "../../environments/environment";
 import {LoginService} from "./login.service";
+import {Shipment} from "../class/Shipment";
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class NetworkService {
       catchError(this.handleError<any>('Update Cart', [])));
   }
 
-  getFreight(freight: any): Observable<any> {
+  getFreight(freight: Shipment): Observable<any> {
     return this.http.post(environment.getShipmentDetails, freight, this.loginService.muleHttpOptions()).pipe(
       catchError(this.handleError<any>('Get Freight', [])));
   }
@@ -45,19 +45,28 @@ export class NetworkService {
     return this.http.post<CartResponse>(environment.order, cart, this.loginService.muleHttpOptions()).pipe(
       tap((cartResp: any) => {
         console.log(cartResp);
-        this.log(cartResp.orderId, cartResp.msg, '');
+        this.log(cartResp.orderId, cartResp.message, '');
       }), catchError(this.handleError<any>('createOrder', [])));
   }
 
   getOrder(orderId: string): Observable<OrderDetails> {
-    const finalURL = environment.getOrder + '?orderId=' + orderId;
-    return this.http.get(finalURL).pipe(
+    return this.http.post(environment.getOrder, {
+      'orderId': orderId
+    }, this.loginService.muleHttpOptions()).pipe(
       catchError(this.handleError<any>('Order Response', [])));
+  }
+
+  getOrderPDF(order: Order): Observable<any> {
+    const finalURL = environment.getOrder + '?type=pdf';
+    return this.http.post(finalURL, {
+        'orderId': order.orderId
+      }, this.loginService.mulePdfHttpOptions()
+    ).pipe(catchError(this.handleError<any>('getOrderPDF', [])));
   }
 
   getUserOrder(userId: string): Observable<OrderDetails[]> {
     const finalURL = environment.getUserOrder + '?userId=' + userId;
-    return this.http.get(finalURL).pipe(
+    return this.http.get(finalURL, this.loginService.muleHttpOptions()).pipe(
       catchError(this.handleError<any>('User Order Response', [])));
   }
 
@@ -67,27 +76,22 @@ export class NetworkService {
       catchError(this.handleError<any>('getParty', [])));
   }
 
-  getInvoice(invoice: any): Observable<any> {
-    const finalURL = environment.invoiceUrl + '/' + invoice.invoiceId;
+  getInvoice(invoice: string): Observable<Invoice> {
+    const finalURL = environment.invoiceUrl + '/' + invoice;
     return this.http.get(finalURL, this.loginService.stripeHttpOptions()).pipe(
       tap((invoiceResp: Invoice) => {
         this.log(invoiceResp.id, 'Get Invoice', '');
       }), catchError(this.handleError<any>('getInvoice', [])));
   }
 
-  getInvoicePDF(invoice: InvoiceRequest): Observable<any> {
-    const finalURL = environment.invoiceUrl + '/' + invoice.invoiceId + '?type=pdf';
+  getInvoicePDF(invoiceId): Observable<any> {
+    const finalURL = environment.invoiceUrl + '/' + invoiceId + '?type=pdf';
     return this.http.get(finalURL, this.loginService.stripeHttpOptions()).pipe(catchError(this.handleError<any>('getInvoicePDF', [])));
   }
-  showInvoicePDF(url: any): any {
-    return this.http.get(url, { responseType: 'blob'}).pipe(catchError(this.handleError<any>('showInvoicePDF', [])));
-  }
 
-  getOrderPDF(order: Order): Observable<any> {
-    const finalURL = environment.invoiceUrl + '/' + order.orderId + '?type=pdf';
-    return this.http.get(finalURL, {
-      responseType: 'blob' as 'json'
-    }).pipe(catchError(this.handleError<any>('getOrderPDF', [])));
+
+  showInvoicePDF(url: any): any {
+    return this.http.get(url, {responseType: 'blob'}).pipe(catchError(this.handleError<any>('showInvoicePDF', [])));
   }
 
   serverLogin() {

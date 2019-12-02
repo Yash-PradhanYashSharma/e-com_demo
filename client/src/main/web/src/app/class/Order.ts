@@ -12,6 +12,7 @@ export class Order {
   total: number;
   orderStatusId: string;
   user_id: string;
+  invoiceId: string;
 }
 
 export class OrderItem {
