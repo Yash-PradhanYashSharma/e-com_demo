@@ -9,10 +9,10 @@ public class Product {
     private String productId;
     private String productName;
     private String description;
-    private BigDecimal productWidth;
-    private BigDecimal productDepth;
-    private BigDecimal productHeight;
-    private BigDecimal productWeight;
+    private Integer productWidth;
+    private Integer productDepth;
+    private Integer productHeight;
+    private Integer productWeight;
     private InventoryItem inventoryItemByInventoryItemId;
 
     @Id
@@ -47,41 +47,41 @@ public class Product {
 
     @Basic
     @Column(name = "productwidth")
-    public BigDecimal getProductWidth() {
+    public Integer getProductWidth() {
         return productWidth;
     }
 
-    public void setProductWidth(BigDecimal productwidth) {
+    public void setProductWidth(Integer productwidth) {
         this.productWidth = productwidth;
     }
 
     @Basic
     @Column(name = "productdepth")
-    public BigDecimal getProductDepth() {
+    public Integer getProductDepth() {
         return productDepth;
     }
 
-    public void setProductDepth(BigDecimal productdepth) {
+    public void setProductDepth(Integer productdepth) {
         this.productDepth = productdepth;
     }
 
     @Basic
     @Column(name = "productheight")
-    public BigDecimal getProductHeight() {
+    public Integer getProductHeight() {
         return productHeight;
     }
 
-    public void setProductHeight(BigDecimal productheight) {
+    public void setProductHeight(Integer productheight) {
         this.productHeight = productheight;
     }
 
     @Basic
     @Column(name = "productweight")
-    public BigDecimal getProductWeight() {
+    public Integer getProductWeight() {
         return productWeight;
     }
 
-    public void setProductWeight(BigDecimal productweight) {
+    public void setProductWeight(Integer productweight) {
         this.productWeight = productweight;
     }
 

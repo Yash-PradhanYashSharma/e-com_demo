@@ -12,7 +12,7 @@ public class CreateOrderExceptionsHandler {
 
 	@ExceptionHandler(CreateOrderException.class)
 	public ResponseEntity<Object> errorOccured(CreateOrderException ex) {
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Some Error Occured");
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Some Error Occurred");
 	}
 
 }

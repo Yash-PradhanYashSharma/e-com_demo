@@ -6,14 +6,14 @@ import java.math.BigInteger;
 import java.util.Objects;
 
 @Entity
-@Table(name = "order_item", schema = "public", catalog = "e_com_db2")
+@Table(name = "order_item", schema = "public", catalog = "e_com_db")
 @IdClass(OrderItemPK.class)
 public class OrderItem {
     private String orderId;
     private Integer orderItemSeqId;
     private String productId;
-    private BigDecimal quantity;
-    private BigDecimal unitPrice;
+    private Integer quantity;
+    private Integer unitPrice;
 
     @Id
     @Column(name = "orderid", nullable = false, length = 20)
@@ -47,21 +47,21 @@ public class OrderItem {
 
     @Basic
     @Column(name = "quantity")
-    public BigDecimal getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(BigDecimal quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
     @Basic
     @Column(name = "unitprice")
-    public BigDecimal getUnitPrice() {
+    public Integer getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitprice) {
+    public void setUnitPrice(Integer unitprice) {
         this.unitPrice = unitprice;
     }
 

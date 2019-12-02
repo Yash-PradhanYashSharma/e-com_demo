@@ -1,31 +1,27 @@
 package com.yash.ecom.server.entity;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 @Entity
-@Table(name = "cart_item", schema = "public", catalog = "e_com_db2")
+@Table(name = "cart_item", schema = "public", catalog = "e_com_db")
 public class CartItem {
 
-    private String userId;
+    private String cartItemId;
     private String productId;
-    private BigDecimal quantity;
-    private BigDecimal unitPrice;
+    private Integer quantity;
+    private Integer unitPrice;
 
     @Id
-    @Column(name = "userId", nullable = false, length = 20)
-    public String getUserId() {
-        return userId;
+    @Column(name = "cartitemid", nullable = false, length = 20)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    public String getCartItemId() {
+        return cartItemId;
     }
 
-    public void setUserId(String userid) {
-        this.userId = userid;
+    public void setCartItemId(String cartItemId) {
+        this.cartItemId = cartItemId;
     }
 
     @Basic
@@ -40,30 +36,31 @@ public class CartItem {
 
     @Basic
     @Column(name = "quantity")
-    public BigDecimal getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(BigDecimal quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
     @Basic
     @Column(name = "unitprice")
-    public BigDecimal getUnitPrice() {
+    public Integer getUnitPrice() {
         return unitPrice;
     }
 
-    public void setUnitPrice(BigDecimal unitprice) {
+    public void setUnitPrice(Integer unitprice) {
         this.unitPrice = unitprice;
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CartItem)) return false;
         CartItem cartItem = (CartItem) o;
-        return Objects.equals(getUserId(), cartItem.getUserId()) &&
+        return Objects.equals(getCartItemId(), cartItem.getCartItemId()) &&
                 Objects.equals(getProductId(), cartItem.getProductId()) &&
                 Objects.equals(getQuantity(), cartItem.getQuantity()) &&
                 Objects.equals(getUnitPrice(), cartItem.getUnitPrice());
@@ -71,6 +68,6 @@ public class CartItem {
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUserId(), getProductId(), getQuantity(), getUnitPrice());
+        return Objects.hash(getCartItemId(), getProductId(), getQuantity(), getUnitPrice());
     }
 }

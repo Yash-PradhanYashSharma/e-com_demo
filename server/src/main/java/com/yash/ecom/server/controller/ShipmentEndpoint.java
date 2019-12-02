@@ -9,8 +9,8 @@ import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
 @Endpoint
 public class ShipmentEndpoint {
-    private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
 
+    private static final String NAMESPACE_URI = "http://spring.io/guides/gs-producing-web-service";
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "getShipment")
     @ResponsePayload

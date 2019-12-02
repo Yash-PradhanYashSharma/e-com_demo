@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "order_adjustment", schema = "public", catalog = "e_com_db2")
+@Table(name = "order_adjustment", schema = "public", catalog = "e_com_db")
 public class OrderAdjustment {
 	
 	@Column(name = "orderadjustmentid", nullable = false, length = 20)
@@ -20,7 +20,7 @@ public class OrderAdjustment {
     @Column(name = "user_id", nullable = false, length = 20)
     private String userId;
     @Basic
-    @Column(name = "orderId", nullable = true, length = 20)
+    @Column(name = "order_id", nullable = true, length = 20)
     private String orderId;
     @Basic
     @Column(name = "adjustment_type", nullable = true, length = 20)
@@ -37,9 +37,7 @@ public class OrderAdjustment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
-    
-    
-    
+
     public String getOrderAdjustmentId() {
         return orderAdjustmentId;
     }

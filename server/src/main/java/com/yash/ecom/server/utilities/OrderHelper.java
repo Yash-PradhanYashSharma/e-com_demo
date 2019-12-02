@@ -9,6 +9,7 @@ import com.yash.ecom.server.repository.OrderAdjustmentsRepository;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class OrderHelper {
 
@@ -20,7 +21,7 @@ public class OrderHelper {
             orderItem.setOrderId(orderId);
             orderItem.setOrderItemSeqId(itemCounter);
             orderItem.setProductId(cartItem.getProductId());
-            orderItem.setQuantity(BigDecimal.valueOf(cartItem.getSelectedQuantity()));
+            orderItem.setQuantity(cartItem.getSelectedQuantity());
             orderItem.setUnitPrice(cartItem.getPrice());
             orderItems.add(orderItem);
             itemCounter++;
@@ -42,7 +43,9 @@ public class OrderHelper {
     public static List<OrderAdjustment> createTotalAdjustmentFromCartAdjustment(List<CartAdjustment> cartAdjustments, OrderAdjustmentsRepository repository, String orderId, String userId) {
         List<OrderAdjustment> orderAdjustments = new ArrayList<>();
         cartAdjustments.forEach(cartAdjustment -> {
-            orderAdjustments.add(createOrderAdjustmentFromCartAdjustment(cartAdjustment, repository.getOrderAdjustmentId(), orderId, userId));
+            Random rand = new Random();
+            int num = rand.nextInt(9000) + 10;
+            orderAdjustments.add(createOrderAdjustmentFromCartAdjustment(cartAdjustment, "OrderAdj" + num, orderId, userId));
         });
         return orderAdjustments;
     }

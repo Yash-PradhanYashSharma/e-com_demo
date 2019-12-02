@@ -20,10 +20,7 @@ import java.sql.Date;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 import static com.yash.ecom.server.enums.OrderStatus.*;
@@ -49,7 +46,9 @@ public class OrderServiceImpl implements OrderService {
     OrderRoleRepository orderRoleRepository;
 
     public String createOrder(CartDetails cart) throws CreateOrderException {
-        String orderId = orderRepository.getOrderId();
+        Random rand = new Random();
+        int num = rand.nextInt(900) + 100;
+        String orderId = "Order" + num;
         Orders order = new Orders();
         order.setOrderId(orderId);
         order.setOrderDate(cart.getCartDate());
@@ -58,9 +57,10 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderStatusId(orderStatus.getOrderStatusId());
         Stream<List<ProductDetails>> cartStream = Stream.of(cart.getItems());
         cartStream.parallel().forEach(productDetails ->
-                productDetails.forEach(productDetail ->
-                        cartTotal = cartTotal.add(productDetail.getPrice().multiply(
-                                BigDecimal.valueOf(productDetail.getSelectedQuantity())))));
+                productDetails.forEach(productDetail -> {
+                    cartTotal = cartTotal.add(
+                            BigDecimal.valueOf(productDetail.getPrice() * productDetail.getSelectedQuantity()));
+                }));
         order.setUser_id(cart.getUserId());
         order.setTotal(cartTotal);
         orderRepository.save(order);

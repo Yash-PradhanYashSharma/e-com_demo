@@ -22,12 +22,10 @@ export class LoginService {
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
     this.oauthService.setupAutomaticSilentRefresh();
-    console.log(this.oauthService.getAccessToken());
   }
 
   login() {
     this.oauthService.initImplicitFlow();
-    console.log(this.oauthService.getAccessToken());
   }
 
   logout() {
@@ -36,7 +34,6 @@ export class LoginService {
 
   muleHttpOptions() {
     const accessToken = this.oauthService.getAccessToken();
-    //console.log('accessToken: ', accessToken);
     return {
       headers: new HttpHeaders({
         'Authorization': 'Bearer ' + accessToken,

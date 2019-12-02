@@ -47,7 +47,6 @@ export class CartComponent implements OnInit {
   updateQuantity(productId, event) {
     this.cart.items.forEach(cartItemDetail => {
       if (cartItemDetail.productId == productId) {
-        console.log(event.target.value);
         cartItemDetail.selectedQuantity = Number(event.target.value);
       }
     });
@@ -95,7 +94,6 @@ export class CartComponent implements OnInit {
         });
       }
       taxTotal += item.price * 0.18;
-
       widthTotal += item.productWidth;
       depthTotal += item.productDepth;
       heightTotal += item.productHeight;
@@ -109,16 +107,15 @@ export class CartComponent implements OnInit {
       }
     });
 
-
-/*    this.networkService.getFreight(new Shipment(widthTotal, depthTotal, heightTotal, weightTotal))
+    this.networkService.getFreight(new Shipment(widthTotal, depthTotal, heightTotal, weightTotal))
       .subscribe(resp => {
-        shipmentTotal = resp;
+        shipmentTotal = resp.charges;
         this.cart.adjustments.filter(function (cartAdjustment) {
           if (cartAdjustment.adjustmentTypeId == ADJUSTMENT_TYPES.FREIGHT) {
             cartAdjustment.amount = shipmentTotal;
           }
         });
-      });*/
+      });
 
     this.cart.adjustments.forEach(item => {
       if (item.adjustmentTypeId == ADJUSTMENT_TYPES.PROMO) {
@@ -128,10 +125,6 @@ export class CartComponent implements OnInit {
 
     this.cart.discountTotal = discountTotal;
     this.cart.itemTotal = itemTotal;
-    console.log("Discount Total : " + discountTotal);
-    console.log("Shipment Total : " + shipmentTotal);
-    console.log("Tax Total : " + taxTotal);
-    console.log("Item Total : " + itemTotal);
     this.cart.grandTotal = itemTotal - discountTotal + shipmentTotal + taxTotal;
   }
 

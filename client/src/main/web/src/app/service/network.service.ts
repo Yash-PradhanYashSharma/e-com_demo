@@ -30,7 +30,7 @@ export class NetworkService {
   }
 
   getFreight(freight: Shipment): Observable<any> {
-    return this.http.post(environment.getShipmentDetails, freight, this.loginService.muleHttpOptions()).pipe(
+    return this.http.post(environment.getShipmentDetails, JSON.stringify(freight), this.loginService.muleHttpOptions()).pipe(
       catchError(this.handleError<any>('Get Freight', [])));
   }
 
@@ -59,7 +59,9 @@ export class NetworkService {
   getOrderPDF(order: Order): Observable<any> {
     const finalURL = environment.getOrder + '?type=pdf';
     return this.http.post(finalURL, {
-        'orderId': order.orderId
+        'orderId': order.orderId,
+        'orderTotal': order.total,
+        'userName': order.user_id
       }, this.loginService.mulePdfHttpOptions()
     ).pipe(catchError(this.handleError<any>('getOrderPDF', [])));
   }

@@ -3,7 +3,6 @@ package com.yash.ecom.server.pojo;
 import com.yash.ecom.server.entity.ProductPrice;
 import com.yash.ecom.server.entity.ProductPromo;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,12 +10,12 @@ public class ProductDetails {
 
     private String productId;
     private Integer quantity;
-    private BigDecimal productWidth;
-    private BigDecimal productDepth;
-    private BigDecimal productHeight;
-    private BigDecimal productWeight;
+    private Integer productWidth;
+    private Integer productDepth;
+    private Integer productHeight;
+    private Integer productWeight;
     private Integer selectedQuantity;
-    private BigDecimal price;
+    private Integer price;
     private String productName;
     private String productDescription;
     private String inventoryItemStatus;
@@ -79,35 +78,35 @@ public class ProductDetails {
         this.productPrices = productPrices;
     }
 
-    public BigDecimal getProductWidth() {
+    public Integer getProductWidth() {
         return productWidth;
     }
 
-    public void setProductWidth(BigDecimal productWidth) {
+    public void setProductWidth(Integer productWidth) {
         this.productWidth = productWidth;
     }
 
-    public BigDecimal getProductDepth() {
+    public Integer getProductDepth() {
         return productDepth;
     }
 
-    public void setProductDepth(BigDecimal productDepth) {
+    public void setProductDepth(Integer productDepth) {
         this.productDepth = productDepth;
     }
 
-    public BigDecimal getProductHeight() {
+    public Integer getProductHeight() {
         return productHeight;
     }
 
-    public void setProductHeight(BigDecimal productHeight) {
+    public void setProductHeight(Integer productHeight) {
         this.productHeight = productHeight;
     }
 
-    public BigDecimal getProductWeight() {
+    public Integer getProductWeight() {
         return productWeight;
     }
 
-    public void setProductWeight(BigDecimal productWeight) {
+    public void setProductWeight(Integer productWeight) {
         this.productWeight = productWeight;
     }
 
@@ -138,11 +137,11 @@ public class ProductDetails {
         this.selectedQuantity = selectedQuantity;
     }
 
-    public BigDecimal getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 }

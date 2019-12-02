@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product_price_type", schema = "public", catalog = "e_com_db2")
+@Table(name = "product_price_type", schema = "public", catalog = "e_com_db")
 public class ProductPriceType {
     private String productPriceTypeId;
     private String description;

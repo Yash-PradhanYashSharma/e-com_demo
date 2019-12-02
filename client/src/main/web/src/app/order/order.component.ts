@@ -30,7 +30,6 @@ export class OrderComponent implements OnInit {
   ngOnInit() {
   }
 
-
   getOrder(): void {
     this.order = this.orderForm.value;
     this.networkService.getOrder(this.order.orderId).subscribe((res) => {

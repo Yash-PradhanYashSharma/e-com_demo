@@ -6,7 +6,7 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product_price", schema = "public", catalog = "e_com_db2")
+@Table(name = "product_price", schema = "public", catalog = "e_com_db")
 @IdClass(ProductPricePK.class)
 public class ProductPrice {
     private String productId;
@@ -14,7 +14,7 @@ public class ProductPrice {
     private String description;
     private Date fromDate;
     private Date thruDate;
-    private BigDecimal price;
+    private Integer price;
     private Product productByProductId;
 
     @Id
@@ -69,11 +69,11 @@ public class ProductPrice {
 
     @Basic
     @Column(name = "price", nullable = true)
-    public BigDecimal getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 

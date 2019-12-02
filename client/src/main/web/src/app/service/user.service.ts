@@ -21,7 +21,6 @@ export class UserService {
     if (!claims) {
       return null;
     }
-    //console.log('claims', claims);
     this.name = claims['name'];
     this.id = claims['preferred_username'];
     return claims['name'];

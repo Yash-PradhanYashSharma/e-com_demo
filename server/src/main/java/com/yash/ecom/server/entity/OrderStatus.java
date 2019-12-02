@@ -5,8 +5,9 @@ import java.sql.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name = "order_status", schema = "public", catalog = "e_com_db2")
+@Table(name = "order_status", schema = "public", catalog = "e_com_db")
 public class OrderStatus {
+    private Integer id;
     private String orderId;
     private Date updatedDate;
     private String orderStatusId;
@@ -22,7 +23,17 @@ public class OrderStatus {
         this.orderStatusId = orderStatusId;
 	}
 
-	@Id
+    @Id
+    @Column(name = "id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @Column(name = "orderstatusid", nullable = false, length = 20)
     public String getOrderStatusId() {
         return orderStatusId;

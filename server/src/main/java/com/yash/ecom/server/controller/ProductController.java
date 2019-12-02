@@ -14,7 +14,6 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-
     @ResponseBody
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public List<ProductDetails> searchProducts(@RequestParam(name = "keyword") String keyword) {
