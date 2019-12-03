@@ -4,7 +4,6 @@ import {FormControl, FormGroup} from '@angular/forms';
 import {MessageService} from '../service/message.service';
 import {OrderDetails} from "../class/Order";
 import {UserService} from "../service/user.service";
-import {Router} from "@angular/router";
 import {saveAs} from 'file-saver';
 
 @Component({
@@ -23,7 +22,7 @@ export class OrderComponent implements OnInit {
   private order: any;
 
   constructor(private networkService: NetworkService, private messageService: MessageService,
-              private userService: UserService, private router: Router) {
+              private userService: UserService) {
     messageService.clear();
   }
 
@@ -41,7 +40,6 @@ export class OrderComponent implements OnInit {
   getUserOrder(): void {
     console.log(this.userService.id);
     this.networkService.getUserOrder(this.userService.id).subscribe((res) => {
-      console.log(res);
       res.forEach(value => {
         this.orderDetails.push(value);
       });
@@ -50,9 +48,13 @@ export class OrderComponent implements OnInit {
   }
 
   getOrderPDF() {
-    this.networkService.getOrderPDF(this.orderForm.value).subscribe((response) => {
-      let file = new Blob([response], {type: 'application/pdf'});
-      saveAs(file, 'order.pdf');
+    this.order = this.orderForm.value;
+    this.networkService.getOrder(this.order.orderId).subscribe((res) => {
+      this.orderDetail = res;
+      this.showHide = false;
+      this.networkService.getOrderPDF(this.orderDetail.orders.orderId, this.orderDetail.orders.total, this.orderDetail.orders.user_id).subscribe((response) => {
+        saveAs(new Blob([response], {type: 'application/pdf'}), this.orderDetail.orders.orderId + '.pdf');
+      });
     });
   }
 }

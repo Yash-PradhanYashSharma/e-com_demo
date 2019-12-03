@@ -44,7 +44,6 @@ export class NetworkService {
   createOrder(cart: Cart): Observable<CartResponse> {
     return this.http.post<CartResponse>(environment.order, cart, this.loginService.muleHttpOptions()).pipe(
       tap((cartResp: any) => {
-        console.log(cartResp);
         this.log(cartResp.orderId, cartResp.message, '');
       }), catchError(this.handleError<any>('createOrder', [])));
   }
@@ -56,13 +55,14 @@ export class NetworkService {
       catchError(this.handleError<any>('Order Response', [])));
   }
 
-  getOrderPDF(order: Order): Observable<any> {
+  getOrderPDF(orderId, total, userName): Observable<any> {
     const finalURL = environment.getOrder + '?type=pdf';
-    return this.http.post(finalURL, {
-        'orderId': order.orderId,
-        'orderTotal': order.total,
-        'userName': order.user_id
-      }, this.loginService.mulePdfHttpOptions()
+    const body = {
+      'orderTotal': total,
+      'orderId': orderId,
+      'userName': userName
+    };
+    return this.http.post(finalURL, body, this.loginService.mulePdfHttpOptions()
     ).pipe(catchError(this.handleError<any>('getOrderPDF', [])));
   }
 
@@ -82,7 +82,6 @@ export class NetworkService {
     const finalURL = environment.invoiceUrl + '/' + invoice;
     return this.http.get(finalURL, this.loginService.stripeHttpOptions()).pipe(
       tap((invoiceResp: Invoice) => {
-        this.log(invoiceResp.id, 'Get Invoice', '');
       }), catchError(this.handleError<any>('getInvoice', [])));
   }
 
@@ -90,7 +89,6 @@ export class NetworkService {
     const finalURL = environment.invoiceUrl + '/' + invoiceId + '?type=pdf';
     return this.http.get(finalURL, this.loginService.stripeHttpOptions()).pipe(catchError(this.handleError<any>('getInvoicePDF', [])));
   }
-
 
   showInvoicePDF(url: any): any {
     return this.http.get(url, {responseType: 'blob'}).pipe(catchError(this.handleError<any>('showInvoicePDF', [])));

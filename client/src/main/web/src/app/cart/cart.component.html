@@ -33,16 +33,13 @@
               <li class="list-group-item" *ngIf="cartAdjustment.adjustmentTypeId == 'TAXES'">
                 Total Tax Adjustment: <span class="float-right">{{cartAdjustment.amount | currency}}</span>
               </li>
-              <li class="list-group-item" *ngIf="cartAdjustment.adjustmentTypeId == 'PROMO'">
-                Promotion Adjustment: <span class="float-right">{{cartAdjustment.amount | currency}}</span>
-              </li>
             </ul>
             <ul class="list-group">
-              <li class="list-group-item" *ngIf="cart.discountTotal > 0">
-                Discount Total: <span class="float-right">{{cart.discountTotal | currency}}</span>
-              </li>
               <li class="list-group-item" *ngIf="cart.itemTotal > 0">
                 Item Total: <span class="float-right">{{cart.itemTotal | currency}}</span>
+              </li>
+              <li class="list-group-item" *ngIf="cart.discountTotal > 0">
+                Discount Total: <span class="float-right">{{cart.discountTotal | currency}}</span>
               </li>
               <li class="list-group-item" *ngIf="cart.grandTotal > 0">
                 Grand Total: <span class="float-right">{{cart.grandTotal | currency}}</span>

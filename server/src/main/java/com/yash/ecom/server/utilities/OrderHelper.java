@@ -6,7 +6,6 @@ import com.yash.ecom.server.pojo.CartAdjustment;
 import com.yash.ecom.server.pojo.ProductDetails;
 import com.yash.ecom.server.repository.OrderAdjustmentsRepository;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -49,7 +48,6 @@ public class OrderHelper {
         });
         return orderAdjustments;
     }
-
 
 }
 

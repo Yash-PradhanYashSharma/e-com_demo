@@ -87,10 +87,18 @@ export class CartComponent implements OnInit {
             return cartAdjustment.productId !== item.productId
           });
           item.productPrices.forEach(price => {
-            if (price.productId == item.productId && price.productPriceTypeId == "LIST_PRICE") {
-              this.cart.adjustments.push(new CartAdjustment(item.productId, ADJUSTMENT_TYPES.PROMO, price.price));
+            let discountAmount = 0;
+            if (price.productId == item.productId && price.productPriceTypeId == "DEFAULT_PRICE") {
+              discountAmount = price.price;
+              item.productPrices.forEach(price => {
+                if (price.productId == item.productId && price.productPriceTypeId == "LIST_PRICE") {
+
+                  this.cart.adjustments.push(new CartAdjustment(item.productId, ADJUSTMENT_TYPES.PROMO, (discountAmount - price.price) * item.selectedQuantity));
+                }
+              });
             }
           });
+
         });
       }
       taxTotal += item.price * 0.18;

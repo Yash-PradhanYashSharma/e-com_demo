@@ -7,7 +7,7 @@
                placeholder="Order Id" type="text">
         <div class="input-group-append">
           <button class="btn btn-outline-primary" id="order-id" (click)="getOrder()">Order</button>
-          <button class="btn btn-outline-primary" id="invoice-pdf-id" (click)="getOrderPDF()">PDF</button>
+          <button class="btn btn-outline-primary" id="order-pdf-id" (click)="getOrderPDF()">PDF</button>
           <button class="btn btn-outline-primary" id="user-order-id" (click)="getUserOrder()">My Orders</button>
         </div>
       </div>
@@ -35,7 +35,8 @@
                   <small>{{orderDetail.orders.orderId }}</small>
                 </div>
               </a>
-              <a class="list-group-item list-group-item-action flex-column align-items-start" *ngIf="orderDetail.orders.invoiceId !== null">
+              <a class="list-group-item list-group-item-action flex-column align-items-start"
+                 *ngIf="orderDetail.orders.invoiceId !== null">
                 <div class="d-flex w-100 justify-content-between">
                   <p class="mb-1">Invoice</p>
                   <small>
@@ -107,93 +108,26 @@
       </div>
     </div>
     <div *ngIf="showHide">
-      <div *ngFor="let orderDetail of orderDetails" class="row">
-        <div class="col-12">
-          <div class="form-group">
-            <ul class="list-group">
-              <a class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="col-12">
-                  <div class="form-group">
-                    <ul class="list-group">
-                      <a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">User</p>
-                          <small>{{orderDetail.orders.user_id}}</small>
-                        </div>
-                      </a>
-                      <a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">Date</p>
-                          <small>{{orderDetail.orders.orderDate}}</small>
-                        </div>
-                      </a>
-                      <a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">Order</p>
-                          <small>{{orderDetail.orders.orderId}}</small>
-                        </div>
-                      </a>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="form-group">
-                    <ul class="list-group">
-                      <a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">Status </p>
-                          <small>{{orderDetail.orders.orderStatusId}}</small>
-                        </div>
-                      </a>
-                      <a *ngFor="let role of orderDetail.roles"
-                         class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">{{role.roleTypeId | titlecase}}</p>
-                          <small>{{role.partyId}}</small>
-                        </div>
-                      </a>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="form-group">
-                    <ul class="list-group">
-                      <a *ngFor="let items of orderDetail.orderItems"
-                         class="list-group-item list-group-item-action flex-column align-items-start">
-                        <h6>{{items.productId}}</h6>
-                        <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">Quantity</p>
-                          <small>{{items.quantity}}</small>
-                        </div>
-                        <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">Price</p>
-                          <small>{{items.unitPrice | currency}}</small>
-                        </div>
-                      </a>
-                    </ul>
-                  </div>
-                </div>
-                <div class="col-12">
-                  <div class="form-group">
-                    <ul class="list-group">
-                      <a *ngFor="let adjustment of orderDetail.adjustments"
-                         class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">{{adjustment.adjustmentType | titlecase}}</p>
-                          <small>{{adjustment.amount | currency}}</small>
-                        </div>
-                      </a>
-                      <a class="list-group-item list-group-item-action flex-column align-items-start">
-                        <div class="d-flex w-100 justify-content-between">
-                          <p class="mb-1">Total </p>
-                          <small>{{orderDetail.orders.total | currency}}</small>
-                        </div>
-                      </a>
-                    </ul>
-                  </div>
-                </div>
-              </a>
-            </ul>
+      <div class="row">
+        <div class="col-sm-6" *ngFor="let orderDetail of orderDetails">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Order #{{orderDetail.orders.orderId }}</h5>
+              <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">User
+                  <span class="badge badge-pill">{{orderDetail.orders.user_id}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Date
+                  <span class="badge badge-pill">{{orderDetail.orders.orderDate}}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Status
+                  <span class="badge badge-pill">{{orderDetail.orders.orderStatusId }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">Total
+                  <span class="badge badge-pill">{{orderDetail.orders.total | currency}}</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

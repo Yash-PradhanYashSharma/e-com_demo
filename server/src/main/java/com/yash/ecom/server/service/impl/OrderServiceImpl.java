@@ -47,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     public String createOrder(CartDetails cart) throws CreateOrderException {
         Random rand = new Random();
-        int num = rand.nextInt(900) + 100;
+        int num = rand.nextInt(9000) + 1000;
         String orderId = "Order" + num;
         Orders order = new Orders();
         order.setOrderId(orderId);
@@ -55,14 +55,8 @@ public class OrderServiceImpl implements OrderService {
         OrderStatus orderStatus = new OrderStatus(Created.name(), orderId, cart.getCartDate());
         orderStatusRepository.saveAndFlush(orderStatus);
         order.setOrderStatusId(orderStatus.getOrderStatusId());
-        Stream<List<ProductDetails>> cartStream = Stream.of(cart.getItems());
-        cartStream.parallel().forEach(productDetails ->
-                productDetails.forEach(productDetail -> {
-                    cartTotal = cartTotal.add(
-                            BigDecimal.valueOf(productDetail.getPrice() * productDetail.getSelectedQuantity()));
-                }));
         order.setUser_id(cart.getUserId());
-        order.setTotal(cartTotal);
+        order.setTotal(cart.getGrandTotal());
         orderRepository.save(order);
         orderItemRepository
                 .saveAll(OrderHelper.createCartItemFromOrderItem(cart.getItems(), orderId));

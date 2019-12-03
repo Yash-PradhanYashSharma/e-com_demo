@@ -2,26 +2,11 @@
 <div class="row">
   <div class="col-12">
     <div *ngIf="invoiceValue != undefined" class="card w-100">
-      <h5 class="card-header">Sales Invoice</h5>
+      <h5 class="card-header">Sales Invoice <button type="button" class="btn btn-link float-right" (click)="getInvoicePDF()">PDF</button></h5>
       <div class="card-body">
-        <h5 class="card-title">{{invoiceValue.customer_name}}</h5>
+        <h5 class="card-title">{{invoiceValue.customer_name}} {{invoiceValue.customer_email}}</h5>
         <div class="row">
-          <div class="card w-50">
-            <div class="card-body">
-              <h5 class="card-title">User Details</h5>
-              <div class="card-text">
-                <ul class="list-group">
-                  <li class="list-group-item">Invoice Id: {{invoiceValue.id}}</li>
-                  <li class="list-group-item">Email : {{invoiceValue.customer_email}}</li>
-                  <li class="list-group-item">Currency : {{invoiceValue.currency | uppercase}}</li>
-                  <li class="list-group-item">
-                    <button type="button" class="btn btn-link" (click)="getInvoicePDF()">PDF</button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="card w-50">
+          <div class="card w-100">
             <div class="card-body">
               <h5 class="card-title">Amount</h5>
               <div class="card-text">
@@ -53,7 +38,7 @@
                 <table class="table table-striped">
                   <thead>
                   <tr>
-                    <th class="text-right" scope="col">#</th>
+                    <th scope="col">#</th>
                     <th scope="col">Item</th>
                     <th class="text-right" scope="col">Quantity</th>
                     <th class="text-right" scope="col">Amount</th>
@@ -75,8 +60,5 @@
       </div>
     </div>
   </div>
-  <!--<div class="pdf-container">
-    <pdf-viewer [src]="testURL" [original-size]="true" [show-all]="true"></pdf-viewer>
-  </div>-->
 </div>
 

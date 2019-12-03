@@ -4,6 +4,7 @@ import {MessageService} from '../service/message.service';
 import {ActivatedRoute, ParamMap} from "@angular/router";
 import {switchMap} from "rxjs/operators";
 import {NetworkService} from "../service/network.service";
+import {saveAs} from "file-saver";
 
 @Component({
   selector: 'app-invoice',
@@ -12,7 +13,7 @@ import {NetworkService} from "../service/network.service";
 export class InvoiceComponent implements OnInit {
 
   invoiceValue: Invoice;
-  lines: Lines;
+  lines: Lines[];
   invoiceId: string;
 
   constructor(private messageService: MessageService, private route: ActivatedRoute, private networkService: NetworkService) {
@@ -31,14 +32,13 @@ export class InvoiceComponent implements OnInit {
     this.networkService.getInvoice(invoiceId).subscribe(res => {
       this.invoiceValue = res;
       this.lines = res['lines']['data'];
-      console.log(res)
     });
   }
 
   getInvoicePDF() {
     this.networkService.getInvoicePDF(this.invoiceId).subscribe((response) => {
       this.networkService.showInvoicePDF(response.url).subscribe(data => {
-        window.location.href = URL.createObjectURL(data);
+        saveAs(new Blob([data], {type: 'application/pdf'}), this.invoiceId + '.pdf');
       });
     });
   }
