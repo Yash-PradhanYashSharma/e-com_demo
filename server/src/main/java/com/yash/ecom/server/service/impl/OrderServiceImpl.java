@@ -47,8 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     public String createOrder(CartDetails cart) throws CreateOrderException {
         Random rand = new Random();
-        int num = rand.nextInt(9000) + 1000;
-        String orderId = "Order" + num;
+        String orderId = String.valueOf(rand.nextInt(9000000) + 1000000);
         Orders order = new Orders();
         order.setOrderId(orderId);
         order.setOrderDate(cart.getCartDate());

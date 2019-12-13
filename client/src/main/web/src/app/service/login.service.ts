@@ -13,51 +13,63 @@ export const authConfig: AuthConfig = {
 })
 export class LoginService {
 
+  accessToken: string;
   constructor(private oauthService: OAuthService) {
     this.configure();
   }
 
-  private configure() {
+  public configure() {
     this.oauthService.configure(authConfig);
     this.oauthService.tokenValidationHandler = new JwksValidationHandler();
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
     this.oauthService.setupAutomaticSilentRefresh();
+    this.accessToken = this.oauthService.getAccessToken();
   }
 
   login() {
     this.oauthService.initImplicitFlow();
   }
 
+  getAccessToken() {
+    this.accessToken = this.oauthService.getAccessToken();
+    return this.accessToken;
+  }
   logout() {
     this.oauthService.logOut();
   }
 
   muleHttpOptions() {
-    const accessToken = this.oauthService.getAccessToken();
     return {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + accessToken,
+        'Authorization': 'Bearer ' + this.accessToken,
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       })
     };
   }
 
-  mulePdfHttpOptions() {
-    const accessToken = this.oauthService.getAccessToken();
+  serviceNowHttpOptions() {
     return {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + accessToken,
+        'Authorization': 'Basic QmV0aC5BbmdsaW46c25vdyEwOTg=',
+        'Content-Type': 'application/json'
+      })
+    };
+  }
+
+  mulePdfHttpOptions() {
+    return {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + this.accessToken,
         'Content-Type': 'application/json'
       }), responseType: 'blob' as 'json'
     };
   }
 
   stripeHttpOptions() {
-    const accessToken = this.oauthService.getAccessToken();
     return {
       headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + accessToken,
+        'Authorization': 'Bearer ' + this.accessToken,
         'Content-Type': 'application/json'
       })
     };

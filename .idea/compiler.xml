@@ -12,7 +12,9 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="exp-ecom-api" target="1.5" />
+      <module name="expecomapi" target="1.5" />
       <module name="mule" target="1.5" />
+      <module name="sysecomapi" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

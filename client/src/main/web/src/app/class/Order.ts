@@ -1,9 +1,12 @@
+import {Incident} from "./Incident";
+
 export class OrderDetails {
   orders: Order;
+  roles: Role[] = new Array<Role>();
   orderItems: OrderItem[] = new Array<OrderItem>();
   adjustments: Adjustment[] = new Array<Adjustment>();
-  roles: Role[] = new Array<Role>();
   orderStatuses: OrderStatus[] = new Array<OrderStatus>();
+  orderIncidents: Incident[] = new Array<Incident>();
 }
 
 export class Order {

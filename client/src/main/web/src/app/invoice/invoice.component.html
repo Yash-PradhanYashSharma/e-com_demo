@@ -2,25 +2,16 @@
 <div class="row">
   <div class="col-12">
     <div *ngIf="invoiceValue != undefined" class="card w-100">
-      <h5 class="card-header">Sales Invoice <button type="button" class="btn btn-link float-right" (click)="getInvoicePDF()">PDF</button></h5>
+      <h5 class="card-header">Sales Invoice <button type="button" class="btn btn-link float-right" (click)="getInvoicePDF()">Generate Invoice PDF</button></h5>
       <div class="card-body">
-        <h5 class="card-title">{{invoiceValue.customer_name}} {{invoiceValue.customer_email}}</h5>
         <div class="row">
           <div class="card w-100">
             <div class="card-body">
               <h5 class="card-title">Amount</h5>
               <div class="card-text">
                 <ul class="list-group">
-                  <li class="list-group-item">Amount Due : <span
+                  <li class="list-group-item">Amount : <span
                     class="float-right">{{invoiceValue.amount_due | currency}}</span></li>
-                  <li class="list-group-item">Amount Remaining: <span
-                    class="float-right">{{invoiceValue.amount_remaining | currency}}</span></li>
-                  <li class="list-group-item">Amount Paid : <span
-                    class="float-right">{{invoiceValue.amount_paid | currency}}</span></li>
-                  <li class="list-group-item">Tax : <span class="float-right">{{invoiceValue.tax | currency}}</span>
-                  </li>
-                  <li class="list-group-item">Tax Percentage: <span
-                    class="float-right">{{invoiceValue.tax_percent | currency}}</span></li>
                   <li class="list-group-item">Sub Total: <span
                     class="float-right">{{invoiceValue.subtotal | currency}}</span></li>
                   <li class="list-group-item">Total: <span class="float-right">{{invoiceValue.total | currency}}</span>

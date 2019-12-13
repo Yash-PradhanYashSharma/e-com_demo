@@ -4,24 +4,26 @@ import {Cart, CartResponse} from '../class/Cart';
 import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {catchError, tap} from 'rxjs/operators';
-import {Order, OrderDetails} from '../class/Order';
+import {OrderDetails} from '../class/Order';
 import {Message} from '../class/Message';
 import {Invoice} from '../class/Invoice';
 import {environment} from "../../environments/environment";
 import {LoginService} from "./login.service";
 import {Shipment} from "../class/Shipment";
+import {Incident} from "../class/Incident";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NetworkService {
 
-  constructor(private http: HttpClient, private messageService: MessageService, public loginService: LoginService) {
+  constructor(private http: HttpClient, private messageService: MessageService, private loginService: LoginService) {
   }
 
   initializeCart(cart: Cart): Observable<any> {
     return this.http.post(environment.initializeCart, JSON.stringify(cart), this.loginService.muleHttpOptions()).pipe(
-      catchError(this.handleError<any>('Initialize Cart', [])));
+      catchError(this.handleError<any>('Oops!! Some thing went wrong.', []))
+    );
   }
 
   updateCart(cart: Cart): Observable<any> {
@@ -37,7 +39,7 @@ export class NetworkService {
   productSearch(keyword: String): Observable<any> {
     const finalURL = environment.productSearch + '?keyword=' + keyword;
     return this.http.get(finalURL, this.loginService.muleHttpOptions()).pipe(
-      catchError(this.handleError<any>('productSearch', []))
+      catchError(this.handleError<any>('Oops!! We are unable to search products at this moment.', []))
     );
   }
 
@@ -66,6 +68,29 @@ export class NetworkService {
     ).pipe(catchError(this.handleError<any>('getOrderPDF', [])));
   }
 
+  getOrderIncidents(orderId): Observable<Incident[]> {
+    const finalURL = environment.incidents + '?type=search';
+    const body = {
+      "userId": "Beth.Anglin",
+      "orderId": orderId
+    };
+    return this.http.post(finalURL, body, this.loginService.muleHttpOptions()).pipe(
+      catchError(this.handleError<any>('Oops!! We are unable to search incidents at this moment.', []))
+    );
+  }
+
+  createOrderIncidents(orderId, description): Observable<Incident[]> {
+    const finalURL = environment.incidents + '?type=create';
+    const body = {
+      "userId": "Beth.Anglin",
+      "orderId": orderId,
+      "incidentDescription": description
+    };
+    return this.http.post(finalURL, body, this.loginService.muleHttpOptions()).pipe(
+      catchError(this.handleError<any>('Oops!! We are unable to search incidents at this moment.', []))
+    );
+  }
+
   getUserOrder(userId: string): Observable<OrderDetails[]> {
     const finalURL = environment.getUserOrder + '?userId=' + userId;
     return this.http.get(finalURL, this.loginService.muleHttpOptions()).pipe(
@@ -82,7 +107,7 @@ export class NetworkService {
     const finalURL = environment.invoiceUrl + '/' + invoice;
     return this.http.get(finalURL, this.loginService.stripeHttpOptions()).pipe(
       tap((invoiceResp: Invoice) => {
-      }), catchError(this.handleError<any>('getInvoice', [])));
+      }), catchError(this.handleError<any>('Oops!! There is an error conneting to the SAP Systems.', [])));
   }
 
   getInvoicePDF(invoiceId): Observable<any> {
@@ -107,7 +132,8 @@ export class NetworkService {
 
   private handleError<T>(operation = 'operation', result?: T) {
     return (error): Observable<T> => {
-      this.logError('', 'Oops! Something went wrong. We\'ll fix it Soon. report error', '');
+      this.logError('', operation, '');
+      this.loginService.configure();
       console.error(operation);
       console.error(error);
       return of(result as T);

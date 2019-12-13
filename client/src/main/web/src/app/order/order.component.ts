@@ -20,6 +20,8 @@ export class OrderComponent implements OnInit {
   orderDetail: OrderDetails;
   orderDetails: OrderDetails[] = new Array<OrderDetails>();
   private order: any;
+  loading: boolean = false;
+  description: string = null;
 
   constructor(private networkService: NetworkService, private messageService: MessageService,
               private userService: UserService) {
@@ -34,11 +36,11 @@ export class OrderComponent implements OnInit {
     this.networkService.getOrder(this.order.orderId).subscribe((res) => {
       this.orderDetail = res;
       this.showHide = false;
+      this.getOrderIncidents(this.order.orderId);
     });
   }
 
   getUserOrder(): void {
-    console.log(this.userService.id);
     this.networkService.getUserOrder(this.userService.id).subscribe((res) => {
       res.forEach(value => {
         this.orderDetails.push(value);
@@ -55,6 +57,20 @@ export class OrderComponent implements OnInit {
       this.networkService.getOrderPDF(this.orderDetail.orders.orderId, this.orderDetail.orders.total, this.orderDetail.orders.user_id).subscribe((response) => {
         saveAs(new Blob([response], {type: 'application/pdf'}), this.orderDetail.orders.orderId + '.pdf');
       });
+      this.getOrderIncidents(this.order.orderId);
     });
+  }
+
+  getOrderIncidents(orderId) {
+    this.networkService.getOrderIncidents(orderId).subscribe(resp => {
+      this.orderDetail.orderIncidents = resp['result'];
+    })
+  }
+
+  createOrderIncidents() {
+    this.networkService.createOrderIncidents(this.order.orderId, this.description).subscribe(resp => {
+      console.log(resp['result']);
+      this.getOrderIncidents(this.order.orderId);
+    })
   }
 }

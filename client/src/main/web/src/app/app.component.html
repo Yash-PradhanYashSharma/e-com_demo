@@ -1,6 +1,13 @@
-<div class="container">
+<div class="container-fluid">
   <nav class="navbar navbar-dark bg-primary">
-    <span class="navbar-brand mb-0 h1">{{title}}</span>
+    <a class="navbar-brand" href="/">
+      <img src="../assets/download.png" width="80" height="40" class="d-inline-block align-top" alt="">
+      <b> {{title}}</b>
+    </a>
+    <span class="navbar-text" *ngIf="userEmail != null">
+      {{userName}} ({{userEmail}})
+    </span>
+    <span class="navbar-text">{{date | date}} </span>
     <button class="btn btn-primary btn-sm" *ngIf="!isAuthenticated" (click)="login()">Login</button>
     <button class="btn btn-primary btn-sm" *ngIf="isAuthenticated" (click)="logout()">Logout</button>
   </nav>
@@ -11,14 +18,11 @@
     <li class="nav-item">
       <a class="nav-link" routerLink="/order" routerLinkActive="active">Order</a>
     </li>
-<!--    <li class="nav-item">
-      <a class="nav-link" routerLink="/invoice" routerLinkActive="active">Invoice</a>
-    </li>-->
   </ul>
   <app-messages></app-messages>
 </div>
 
-<div class="container">
+<div class="container-fluid">
   <router-outlet></router-outlet>
 </div>
 

@@ -11,12 +11,17 @@ export class AppComponent {
 
   title = 'MuleSoft Integration Middleware Accelerator';
   isAuthenticated: boolean = false;
+  userName: string;
+  userEmail: string;
+  date: Date = new Date();
 
   constructor(private loginService: LoginService, private userService: UserService) {
   }
 
   ngDoCheck() {
     this.isAuthenticated = this.userService.isUserLoggedIn();
+    this.userName = this.userService.name;
+    this.userEmail = this.userService.id;
   }
 
   login() {

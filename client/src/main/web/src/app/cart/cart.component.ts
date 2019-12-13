@@ -1,10 +1,10 @@
-import {HttpClient} from "@angular/common/http";
 import {Component, OnInit} from '@angular/core';
 import {ADJUSTMENT_TYPES, Cart, CartAdjustment} from '../class/Cart';
 import {MessageService} from '../service/message.service';
 import {NetworkService} from '../service/network.service';
 import {UserService} from "../service/user.service";
 import {Shipment} from "../class/Shipment";
+import {LoginService} from "../service/login.service";
 
 @Component({
   selector: 'app-cart',
@@ -15,19 +15,32 @@ export class CartComponent implements OnInit {
   showItem: any[];
   keyword = 'productName';
   cart: Cart;
+  loading: boolean = false;
 
-  constructor(private networkService: NetworkService, private messageService: MessageService, private userService: UserService, private http: HttpClient) {
+  constructor(private networkService: NetworkService, private messageService: MessageService, private loginService: LoginService, private userService: UserService) {
     messageService.clear();
   }
 
   ngOnInit() {
-    this.cart = new Cart();
-    this.cart.userId = this.userService.id;
-    this.cart.cartDate = new Date();
-    this.networkService.initializeCart(this.cart).subscribe((response) => {
-      this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.TAXES, 0));
-      this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.FREIGHT, 0));
-    });
+    //this.refreshCart();
+  }
+
+  refreshCart() {
+    if (this.loginService.getAccessToken() != null) {
+      if (this.cart == undefined) {
+        this.loading = true;
+        this.cart = new Cart();
+        this.cart.userId = this.userService.id;
+        this.cart.cartDate = new Date();
+        this.networkService.initializeCart(this.cart).subscribe(res => {
+          this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.TAXES, 0));
+          this.cart.adjustments.push(new CartAdjustment(null, ADJUSTMENT_TYPES.FREIGHT, 0));
+          this.loading = false;
+        });
+      }
+    } else {
+      this.loginService.configure();
+    }
   }
 
   selectEvent(item) {
@@ -42,7 +55,6 @@ export class CartComponent implements OnInit {
     });
     this.calculateAdjustment();
   }
-
 
   updateQuantity(productId, event) {
     this.cart.items.forEach(cartItemDetail => {
@@ -63,9 +75,12 @@ export class CartComponent implements OnInit {
   }
 
   onChangeSearch(val: string) {
+    this.refreshCart();
     this.networkService.productSearch(val).subscribe(response => {
       this.showItem = response;
-    }, error => console.log(error));
+    }, error => {
+      console.log(error);
+    });
   }
 
   calculateAdjustment() {
@@ -98,7 +113,6 @@ export class CartComponent implements OnInit {
               });
             }
           });
-
         });
       }
       taxTotal += item.price * 0.18;

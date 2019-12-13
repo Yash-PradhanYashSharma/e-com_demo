@@ -15,6 +15,7 @@ export class InvoiceComponent implements OnInit {
   invoiceValue: Invoice;
   lines: Lines[];
   invoiceId: string;
+  isfirst: boolean = true;
 
   constructor(private messageService: MessageService, private route: ActivatedRoute, private networkService: NetworkService) {
     messageService.clear();
@@ -24,15 +25,20 @@ export class InvoiceComponent implements OnInit {
     this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
         this.invoiceId = params.get('id'))).subscribe(resp => {
-      this.getInvoice(this.invoiceId);
+      if (this.invoiceId != null) {
+        this.getInvoice(this.invoiceId);
+      }
     });
   }
 
   getInvoice(invoiceId): void {
-    this.networkService.getInvoice(invoiceId).subscribe(res => {
-      this.invoiceValue = res;
-      this.lines = res['lines']['data'];
-    });
+    if (this.isfirst) {
+      this.isfirst = false;
+      this.networkService.getInvoice(invoiceId).subscribe(res => {
+        this.invoiceValue = res;
+        this.lines = res['lines']['data'];
+      });
+    }
   }
 
   getInvoicePDF() {
