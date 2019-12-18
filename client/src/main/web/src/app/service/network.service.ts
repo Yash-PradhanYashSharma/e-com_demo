@@ -28,12 +28,12 @@ export class NetworkService {
 
   updateCart(cart: Cart): Observable<any> {
     return this.http.post(environment.updateCart, JSON.stringify(cart), this.loginService.muleHttpOptions()).pipe(
-      catchError(this.handleError<any>('Update Cart', [])));
+      catchError(this.handleError<any>('Oops!! We are unable to update Cart at this moment.', [])));
   }
 
   getFreight(freight: Shipment): Observable<any> {
     return this.http.post(environment.getShipmentDetails, JSON.stringify(freight), this.loginService.muleHttpOptions()).pipe(
-      catchError(this.handleError<any>('Get Freight', [])));
+      catchError(this.handleError<any>('Oops!! We are unable to get Freight charges at this moment.', [])));
   }
 
   productSearch(keyword: String): Observable<any> {
@@ -47,14 +47,14 @@ export class NetworkService {
     return this.http.post<CartResponse>(environment.order, cart, this.loginService.muleHttpOptions()).pipe(
       tap((cartResp: any) => {
         this.log(cartResp.orderId, cartResp.message, '');
-      }), catchError(this.handleError<any>('createOrder', [])));
+      }), catchError(this.handleError<any>('Oops!! We are unable to create Order at this moment.', [])));
   }
 
   getOrder(orderId: string): Observable<OrderDetails> {
     return this.http.post(environment.getOrder, {
       'orderId': orderId
     }, this.loginService.muleHttpOptions()).pipe(
-      catchError(this.handleError<any>('Order Response', [])));
+      catchError(this.handleError<any>('Oops!! We are unable to find Order at this moment.', [])));
   }
 
   getOrderPDF(orderId, total, userName): Observable<any> {
@@ -65,7 +65,7 @@ export class NetworkService {
       'userName': userName
     };
     return this.http.post(finalURL, body, this.loginService.mulePdfHttpOptions()
-    ).pipe(catchError(this.handleError<any>('getOrderPDF', [])));
+    ).pipe(catchError(this.handleError<any>('Oops!! We are unable to find Order PFD at this moment.', [])));
   }
 
   getOrderIncidents(orderId): Observable<Incident[]> {
@@ -87,14 +87,14 @@ export class NetworkService {
       "incidentDescription": description
     };
     return this.http.post(finalURL, body, this.loginService.muleHttpOptions()).pipe(
-      catchError(this.handleError<any>('Oops!! We are unable to search incidents at this moment.', []))
+      catchError(this.handleError<any>('Oops!! We are unable to create incidents at this moment.', []))
     );
   }
 
   getUserOrder(userId: string): Observable<OrderDetails[]> {
     const finalURL = environment.getUserOrder + '?userId=' + userId;
     return this.http.get(finalURL, this.loginService.muleHttpOptions()).pipe(
-      catchError(this.handleError<any>('User Order Response', [])));
+      catchError(this.handleError<any>('Oops!! We are unable to find orders at this moment.', [])));
   }
 
   getParty(): Observable<any> {
@@ -107,16 +107,18 @@ export class NetworkService {
     const finalURL = environment.invoiceUrl + '/' + invoice;
     return this.http.get(finalURL, this.loginService.stripeHttpOptions()).pipe(
       tap((invoiceResp: Invoice) => {
-      }), catchError(this.handleError<any>('Oops!! There is an error conneting to the SAP Systems.', [])));
+      }), catchError(this.handleError<any>('Oops!! There is an error connecting to the SAP Systems.', [])));
   }
 
   getInvoicePDF(invoiceId): Observable<any> {
     const finalURL = environment.invoiceUrl + '/' + invoiceId + '?type=pdf';
-    return this.http.get(finalURL, this.loginService.stripeHttpOptions()).pipe(catchError(this.handleError<any>('getInvoicePDF', [])));
+    return this.http.get(finalURL, this.loginService.stripeHttpOptions()).pipe(
+      catchError(this.handleError<any>('Oops!! There is an error in finding Invoice PDF from SAP Systems.', [])));
   }
 
   showInvoicePDF(url: any): any {
-    return this.http.get(url, {responseType: 'blob'}).pipe(catchError(this.handleError<any>('showInvoicePDF', [])));
+    return this.http.get(url, {responseType: 'blob'}).pipe(
+      catchError(this.handleError<any>('Oops!! There is an error in finding Invoice from SAP Systems.', [])));
   }
 
   serverLogin() {

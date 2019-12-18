@@ -71,6 +71,7 @@ export class OrderComponent implements OnInit {
     this.networkService.createOrderIncidents(this.order.orderId, this.description).subscribe(resp => {
       console.log(resp['result']);
       this.getOrderIncidents(this.order.orderId);
+      this.description = "";
     })
   }
 }
